@@ -1,0 +1,19 @@
+# method_key	round	role	problem	status
+base	-	ref	model gốc	
+grpo_only	-	ref	baseline mạnh nhất bảng nhóm	
+sft_luna	-	ref	SFT lời giải Luna (14,4→8,1)	
+sft_luna_grpo	-	ref	SFT→GRPO (paper SFT-then-RL)	
+sft_hint	-	anchor	STaR rationalization tách rời (phase 1)	
+sft_self	-	anchor	RFT tự giải (phase 1)	
+r01_metaopsd	R01	idea	thầy tự chưng cất học theo lợi ích trò	
+r01_guide_tokw	R01	idea	câu cả-nhóm-sai + tín hiệu thưa	
+r01_fade	R01	idea	gợi ý rút dần theo câu	
+r01_compress_sd	R01	idea	thầy Luna dạy viết gọn (512)	
+guide	-	ref	Guide 2506.13923 (=r01_guide_tokw tokw=0)	
+opsd	-	ref	OPSD thuần	
+opsd_dense	R01	idea	reward dày thầy kiểu cộng, mọi câu	
+r01_potential	R01	idea	shaping thế năng P(đáp án đúng)	
+r02_fork	R02	idea	câu cả-sai không gradient; y* chọn chỗ rẽ	dead-prescreen
+r02_transfer	R02	idea	giá trị thầy dao động; chọn theo chuyển giao	
+r03_cfpair	R03	idea	giọng văn y* che nội dung; cặp phản thực tế	pass-prescreen
+r03_invar	R03	idea	gradient bất biến qua giọng (IRM/AND-mask)	dead-prescreen

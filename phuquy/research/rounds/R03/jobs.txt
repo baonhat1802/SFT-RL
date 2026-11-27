@@ -1,0 +1,2 @@
+# tên  idea  [--opt ...] — 1 seed, 1 epoch curated, train @2048 (giống grpo_s1), eval @512 và @2048 n=4
+cfpair_s1          cfpair

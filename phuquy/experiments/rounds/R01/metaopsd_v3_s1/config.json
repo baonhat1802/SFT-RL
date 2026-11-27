@@ -1,0 +1,36 @@
+{
+  "args": {
+    "idea": "metaopsd",
+    "opt": [
+      "keep_inner=0"
+    ],
+    "seed": 1,
+    "epochs": 1.0,
+    "max_rollouts": null,
+    "prompts_per_rollout": 128,
+    "limit": null,
+    "num_gen": 8,
+    "max_completion": 2048,
+    "lr": 1e-05,
+    "lora_r": 32,
+    "lora_alpha": 64,
+    "micro_batch": 4,
+    "vllm_mem": 0.4,
+    "reward_workers": 8,
+    "out": "runs/r01/metaopsd_v3_s1",
+    "hub_repo": null,
+    "save_every": 5
+  },
+  "opts": {
+    "alpha": 0.001,
+    "inner_norm": 0.1,
+    "hess_clip": 1.0,
+    "keep_inner": 0,
+    "hessian": 1,
+    "query": "other",
+    "meta": 1,
+    "lam": 0.5,
+    "max_s": 32,
+    "eps": 0.01
+  }
+}

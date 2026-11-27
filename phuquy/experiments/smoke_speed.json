@@ -1,0 +1,29 @@
+{
+  "grpo_luffy8k": {
+    "exit": 0,
+    "wall_s_incl_load": 915,
+    "train_runtime_s": 840.1053,
+    "sec_per_optimizer_step": 210.026325,
+    "mean_completion_tokens": [
+      628.98828125,
+      686.798828125
+    ],
+    "est_hours_full_run": 14.6
+  },
+  "grpo_curated": {
+    "exit": 0,
+    "wall_s_incl_load": 885,
+    "train_runtime_s": 810.4632,
+    "sec_per_optimizer_step": 202.6158,
+    "mean_completion_tokens": [
+      667.3515625,
+      658.9033203125
+    ],
+    "est_hours_full_run": 15.0
+  },
+  "sft_luffy8k": {
+    "exit": 0,
+    "train_runtime_s": 345.0023,
+    "est_hours_full_run": 1.8
+  }
+}

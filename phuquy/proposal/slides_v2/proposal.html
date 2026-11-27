@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Combining SFT and RL</title>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=block" rel="stylesheet">
+<style>
+  :root { --ink: #1c1e21; --grey: #6e7378; --rule: #c9cdd0; --accent: #0f5e63;
+          --t0: #d9e8e6;              /* tint of the accent: neutral bars, highlights */
+          --t1: #efe3cc; --t2: #dde8dc; --t3: #e4ddee; }
+  @page { size: 1600px 900px; margin: 0 }
+  * { box-sizing: border-box; margin: 0 }
+  body { background: #e9e9e9; font-family: 'Source Sans 3', sans-serif; color: var(--ink) }
+  .slide { width: 1600px; height: 900px; background: #fff; position: relative; overflow: hidden;
+           display: flex; flex-direction: column; align-items: center; padding: 56px 150px 0;
+           page-break-after: always; margin: 0 auto 24px }
+  h1 { font-family: Jost, sans-serif; font-weight: 300; font-size: 76px; letter-spacing: 1px; text-align: center; margin-bottom: 40px }
+  /* centre the body between title and footer: equal auto margins above the first block and below the last */
+  .slide:not(.cover) { padding-bottom: 120px }
+  .slide:not(.cover) > h1 + * { margin-top: auto !important }
+  .slide:not(.cover)::after { content: ''; margin-top: auto }
+  .take, .note { text-wrap: balance }
+  .visual { flex: 0 0 auto; margin-top: 70px; display: flex; align-items: center; justify-content: center; width: 100% }
+  .cols { display: flex; gap: 56px; width: 100%; margin-top: 56px }
+  .col { flex: 1; font-size: 27px; line-height: 1.35 }
+  .col .bar { height: 6px; margin-bottom: 22px }
+  .col b { display: block; font-family: Jost, sans-serif; font-weight: 500; margin-bottom: 6px }
+  .take { color: var(--accent); font-size: 34px; text-align: center; margin-top: 52px; line-height: 1.3 }
+  .note { color: var(--grey); font-size: 26px; text-align: center; margin-top: 14px }
+  .src { position: absolute; bottom: 62px; left: 150px; right: 150px; text-align: center; font-size: 21px; color: var(--grey) }
+  .pg { position: absolute; bottom: 24px; left: 0; right: 0; text-align: center; font-size: 21px; color: var(--grey) }
+  .cover { justify-content: center; padding-top: 0 }
+  .cover h1 { font-size: 92px }
+  .cover .q { font-size: 34px; color: var(--accent); margin-top: 36px }
+  .cover .who { font-size: 26px; color: var(--grey); margin-top: 80px }
+  svg text { font-family: 'Source Sans 3', sans-serif }
+
+  /* flows built from boxes */
+  .flow { display: flex; align-items: center; gap: 22px }
+  .box { border: 2px solid var(--rule); border-radius: 10px; padding: 14px 20px; font-size: 27px; white-space: nowrap; text-align: center; background: #fff; line-height: 1.25 }
+  .box small { display: block; font-size: 21px; color: var(--grey); margin-top: 4px }
+  .box.hi { border-color: var(--accent); background: var(--t0) }
+  .arr { font-family: Jost, sans-serif; font-size: 40px; color: var(--grey) }
+  .lane { display: grid; grid-template-columns: 130px auto; align-items: center; row-gap: 46px; column-gap: 30px }
+  .lane .box, .flow.big .box { font-size: 31px; padding: 18px 26px }
+  .lane .tag { font-family: Jost, sans-serif; font-weight: 500; font-size: 40px; text-align: right }
+
+  /* big formula lines */
+  .eq { font-family: Jost, sans-serif; font-weight: 400; font-size: 54px; display: flex; gap: 14px; align-items: center; justify-content: center }
+  .eq .t { padding: 2px 12px; border-radius: 4px }
+  .eq sub { font-size: 30px }
+
+  /* tables */
+  table { border-collapse: collapse; font-size: 27px }
+  th { font-family: Jost, sans-serif; font-weight: 500; text-align: left; padding: 10px 28px; border-bottom: 2px solid var(--ink) }
+  td { padding: 10px 28px; border-bottom: 1px solid var(--rule) }
+  td.c, th.c { text-align: center }
+  tr.hi td { background: var(--t0) }
+  td.ok { background: var(--t2) }
+  td.rowh { color: var(--grey) }
+  .sym { font-family: Jost, sans-serif; font-weight: 500; white-space: nowrap }
+  .num td { font-variant-numeric: tabular-nums }
+  .mathd { font-size: 40px; text-align: center }
+  .stamp { position: absolute; top: 28px; right: 40px; font-size: 25px; font-weight: 600; color: var(--accent);
+           background: var(--t0); padding: 8px 18px; border-radius: 6px }
+  table.dense { font-size: 23px }
+  table.dense td, table.dense th { padding: 12px 18px; vertical-align: top; line-height: 1.3 }
+  td.good { background: var(--t2) }
+  td.bad { background: var(--t1) }
+  .xrow { display: grid; grid-template-columns: 280px minmax(0,1fr) 330px; align-items: center; column-gap: 36px;
+          width: 1300px; padding: 20px 0; border-bottom: 1px solid var(--rule) }
+  .xrow:first-child { border-top: 2px solid var(--ink) }
+  .xrow .name { font-family: Jost, sans-serif; font-weight: 500; font-size: 30px }
+  .xrow .sub { font-size: 23px; color: var(--grey); margin-top: 6px }
+  .xrow .f { font-size: 26px; white-space: nowrap }
+  .xrow .res { font-family: Jost, sans-serif; font-size: 40px; text-align: right }
+  .xrow .res small { display: block; font-family: 'Source Sans 3', sans-serif; font-size: 22px; color: var(--grey) }
+  .mathd .katex-display { margin: 0 }
+  td .katex, p .katex, .col .katex { font-size: 1.1em }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],ignoredTags:['script','noscript','style','textarea','pre','code','svg'],throwOnError:false,output:'html'})"></script>
+</head>
+<body>
+
+<!-- 1 -->
+<section class="slide cover">
+  <h1>Combining SFT and RL</h1>
+  <p class="q">How can a single training run retain the strengths of SFT and RL?</p>
+  <p class="who">Nguyen Hong Son · Nguyen Lam Phu Quy · Dinh Cong Huy Hoang · Le Ho Bao Nhat</p>
+  <p class="note" style="margin-top:18px">GStar 2026 capstone proposal</p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <h1>Two sources of training signal</h1>
+  <div class="visual">
+    <div class="lane">
+      <div class="tag">SFT</div>
+      <div class="flow">
+        <div class="box">reference solution</div><span class="arr">→</span>
+        <div class="box">token-level log-likelihood</div>
+      </div>
+      <div class="tag">GRPO</div>
+      <div class="flow">
+        <div class="box">8 sampled solutions</div><span class="arr">→</span>
+        <div class="box">binary reward</div><span class="arr">→</span>
+        <div class="box hi">advantage = reward − group mean</div>
+      </div>
+    </div>
+  </div>
+  <p class="take" style="margin-top:80px">SFT learns from a reference solution, whereas GRPO learns only from solutions sampled from the model.</p>
+  <p class="note">The 8 sampled solutions (rollouts) form a group. The pass rate $p$ is the fraction of correct solutions in the group.</p>
+  <p class="src">SFT: supervised fine-tuning. RL: reinforcement learning. GRPO: Group Relative Policy Optimization, the RL method used in all experiments.</p>
+  <p class="pg">2</p>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <h1>Complementary strengths</h1>
+  <div class="visual">
+    <table>
+      <tr><th></th><th>SFT</th><th>RL (GRPO)</th></tr>
+      <tr><td class="rowh">Feedback density</td><td class="ok">every token</td><td>one reward per solution</td></tr>
+      <tr><td class="rowh">Unsolved questions</td><td class="ok">supervised signal</td><td>no gradient</td></tr>
+      <tr><td class="rowh">New knowledge</td><td class="ok">transferred from reference solutions</td><td>limited to problems already solvable [3]</td></tr>
+      <tr><td class="rowh">Training data</td><td>reference text (off-policy)</td><td class="ok">model samples (on-policy)</td></tr>
+      <tr><td class="rowh">Forgetting</td><td>larger [1, 2]</td><td class="ok">smaller [1]</td></tr>
+    </table>
+  </div>
+  <p class="take">The goal is to retain the shaded strengths of SFT and RL.</p>
+  <p class="src">[1] Shenfeld et al., RL's Razor, ICLR 2026. [2] Chu et al., SFT Memorizes, RL Generalizes, ICML 2025. [3] Yue et al., Does RL Really Incentivize Reasoning Capacity beyond the Base Model?, arXiv 2504.13837.</p>
+  <p class="pg">3</p>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <h1>SFT alone lowers accuracy</h1>
+  <div class="visual">
+    <svg width="620" height="440" viewBox="0 0 620 440">
+      <line x1="80" y1="380" x2="560" y2="380" stroke="var(--ink)" stroke-width="2"/>
+      <!-- scale: 13.6 px per point, baseline y=380 -->
+      <rect x="150" y="184.2" width="110" height="195.8" fill="var(--t0)"/>
+      <rect x="350" y="269.8" width="110" height="110.2" fill="var(--accent)"/>
+      <g stroke="var(--ink)" stroke-width="2">
+        <line x1="205" y1="177.4" x2="205" y2="191.0"/><line x1="405" y1="256.2" x2="405" y2="283.4"/>
+      </g>
+      <g font-size="28" text-anchor="middle">
+        <text x="205" y="164">14.4</text>
+        <text x="405" y="244" fill="var(--accent)" font-weight="600">8.1</text>
+      </g>
+      <line x1="260" y1="184.2" x2="465" y2="184.2" stroke="var(--grey)" stroke-width="2" stroke-dasharray="6 6"/>
+      <line x1="480" y1="184.2" x2="480" y2="269.8" stroke="var(--accent)" stroke-width="2"/>
+      <text x="492" y="235" font-size="28" fill="var(--accent)">−6.3</text>
+      <g font-size="25" text-anchor="middle" fill="var(--grey)">
+        <text x="205" y="420">No training</text><text x="405" y="420">SFT only</text>
+      </g>
+    </svg>
+  </div>
+  <p class="take">Fine-tuning on reference solutions lowers average accuracy by 6.3 points.</p>
+  <p class="src">Qwen3-0.6B, no thinking mode, 512-token answers. Average accuracy (%) over AIME24, AMC23, MATH500, Minerva and OlympiadBench; error bars: std over 3 seeds.</p>
+  <p class="pg">4</p>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <h1>No RL signal on unsolved questions</h1>
+  <div class="visual">
+   <div style="position:relative">
+    <svg width="1000" height="450" viewBox="0 0 1000 450">
+      <g transform="translate(120,30)">
+        <rect x="0" y="0" width="76" height="330" fill="var(--t1)"/>
+        <rect x="684" y="0" width="76" height="330" fill="var(--t2)"/>
+        <line x1="0" y1="330" x2="760" y2="330" stroke="var(--ink)" stroke-width="2"/>
+        <line x1="0" y1="0" x2="0" y2="330" stroke="var(--ink)" stroke-width="2"/>
+        <path d="M0.0,330.0 L7.6,304.5 L15.2,280.8 L22.8,258.6 L30.4,238.1 L38.0,218.9 L45.6,201.2 L53.2,184.7 L60.8,169.4 L68.4,155.2 L76.0,142.1 L83.6,129.9 L91.2,118.7 L98.8,108.3 L106.4,98.7 L114.0,89.9 L121.6,81.8 L129.2,74.3 L136.8,67.5 L144.4,61.2 L152.0,55.4 L159.6,50.1 L167.2,45.2 L174.8,40.8 L182.4,36.7 L190.0,33.0 L197.6,29.7 L205.2,26.6 L212.8,23.8 L220.4,21.3 L228.0,19.0 L235.6,17.0 L243.2,15.1 L250.8,13.4 L258.4,11.9 L266.0,10.6 L273.6,9.4 L281.2,8.3 L288.8,7.3 L296.4,6.5 L304.0,5.8 L311.6,5.1 L319.2,4.5 L326.8,4.1 L334.4,3.7 L342.0,3.3 L349.6,3.0 L357.2,2.8 L364.8,2.7 L372.4,2.6 L380.0,2.6 L387.6,2.6 L395.2,2.7 L402.8,2.8 L410.4,3.0 L418.0,3.3 L425.6,3.7 L433.2,4.1 L440.8,4.5 L448.4,5.1 L456.0,5.8 L463.6,6.5 L471.2,7.3 L478.8,8.3 L486.4,9.4 L494.0,10.6 L501.6,11.9 L509.2,13.4 L516.8,15.1 L524.4,17.0 L532.0,19.0 L539.6,21.3 L547.2,23.8 L554.8,26.6 L562.4,29.7 L570.0,33.0 L577.6,36.7 L585.2,40.8 L592.8,45.2 L600.4,50.1 L608.0,55.4 L615.6,61.2 L623.2,67.5 L630.8,74.3 L638.4,81.8 L646.0,89.9 L653.6,98.7 L661.2,108.3 L668.8,118.7 L676.4,129.9 L684.0,142.1 L691.6,155.2 L699.2,169.4 L706.8,184.7 L714.4,201.2 L722.0,218.9 L729.6,238.1 L737.2,258.6 L744.8,280.8 L752.4,304.5 L760.0,330.0" fill="none" stroke="var(--accent)" stroke-width="4"/>
+        <g font-size="24" fill="var(--grey)" text-anchor="middle">
+          <text x="0" y="364">0</text><text x="380" y="364">0.5</text><text x="760" y="364">1</text>
+          <text x="380" y="404">pass rate <tspan font-family="KaTeX_Math" font-style="italic">p</tspan> of the question</text>
+        </g>
+        <g font-size="22" fill="var(--grey)" text-anchor="end"><text x="-14" y="8">1</text><text x="-14" y="336">0</text></g>
+        <text x="0" y="-12" font-size="22" fill="var(--grey)">mostly incorrect</text>
+        <text x="760" y="-12" font-size="22" text-anchor="end" fill="var(--grey)">mostly correct</text>
+      </g>
+    </svg>
+    <div style="position:absolute;left:120px;width:760px;top:190px;text-align:center">
+      <div style="font-size:22px;color:var(--grey);line-height:1.3">probability that a group contains<br>correct and incorrect solutions</div>
+      <div class="mathd" style="font-size:34px;margin-top:6px">$1-p^{8}-(1-p)^{8}$</div>
+    </div>
+   </div>
+  </div>
+  <p class="take">A group with only incorrect solutions has zero advantage and contributes no gradient.</p>
+  <p class="src">Shaded: $p&lt;0.1$ or $p&gt;0.9$. Yue et al. [3] report that RL mainly improves accuracy on problems that the base model already solves.</p>
+  <p class="pg">5</p>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <h1>Common combination schedules</h1>
+  <div class="visual">
+    <svg width="1240" height="380" viewBox="0 0 1240 380">
+      <g font-size="28" text-anchor="end">
+        <text x="250" y="60">Sequential</text>
+        <text x="250" y="180">Fixed mixture</text>
+        <text x="250" y="300">Adaptive mixture</text>
+      </g>
+      <!-- sequential: SFT then RL -->
+      <rect x="280" y="20" width="360" height="60" fill="var(--t1)"/>
+      <rect x="640" y="20" width="540" height="60" fill="var(--t2)"/>
+      <text x="460" y="60" font-size="26" text-anchor="middle">SFT</text>
+      <text x="910" y="60" font-size="26" text-anchor="middle">RL</text>
+      <!-- fixed mix: both every step, equal share -->
+      <rect x="280" y="140" width="900" height="30" fill="var(--t1)"/>
+      <rect x="280" y="170" width="900" height="30" fill="var(--t2)"/>
+      <text x="730" y="163" font-size="22" text-anchor="middle">SFT 0.5</text>
+      <text x="730" y="193" font-size="22" text-anchor="middle">RL 0.5</text>
+      <!-- adaptive: both every step, share set during training -->
+      <polygon points="280,260 1180,260 1180,272 280,308" fill="var(--t1)"/>
+      <polygon points="280,308 1180,272 1180,320 280,320" fill="var(--t2)"/>
+      <text x="330" y="290" font-size="22">SFT</text>
+      <text x="1130" y="306" font-size="22" text-anchor="end">RL</text>
+      <text x="280" y="370" font-size="22" fill="var(--grey)">training steps →</text>
+    </svg>
+  </div>
+  <p class="take">The three schedules differ only in the weight assigned to SFT at each step.</p>
+  <p class="pg">6</p>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <h1>Sequential training underperforms</h1>
+  <div class="visual">
+    <svg width="620" height="440" viewBox="0 0 620 440">
+      <line x1="80" y1="380" x2="560" y2="380" stroke="var(--ink)" stroke-width="2"/>
+      <rect x="150" y="82.2" width="110" height="297.8" fill="var(--t0)"/>
+      <rect x="350" y="146.1" width="110" height="233.9" fill="var(--accent)"/>
+      <g stroke="var(--ink)" stroke-width="2">
+        <line x1="205" y1="71.3" x2="205" y2="93.1"/><line x1="405" y1="131.1" x2="405" y2="161.1"/>
+      </g>
+      <g font-size="28" text-anchor="middle">
+        <text x="205" y="58">21.9</text>
+        <text x="405" y="118" fill="var(--accent)" font-weight="600">17.2</text>
+      </g>
+      <line x1="260" y1="82.2" x2="465" y2="82.2" stroke="var(--grey)" stroke-width="2" stroke-dasharray="6 6"/>
+      <line x1="480" y1="82.2" x2="480" y2="146.1" stroke="var(--accent)" stroke-width="2"/>
+      <text x="492" y="122" font-size="28" fill="var(--accent)">−4.7</text>
+      <g font-size="25" text-anchor="middle" fill="var(--grey)">
+        <text x="205" y="420">GRPO only</text><text x="405" y="420">SFT → GRPO</text>
+      </g>
+    </svg>
+  </div>
+  <p class="take">GRPO initialised from the SFT model scores 4.7 points below GRPO initialised from the base model.</p>
+  <p class="src">Same model, benchmarks, 512-token budget and seeds as slide 4.</p>
+  <p class="pg">7</p>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <h1>Notation</h1>
+  <div class="visual">
+    <table>
+      <tr><th>Symbol</th><th>Meaning</th></tr>
+      <tr><td class="sym">$x,\ y^*$</td><td>question and reference solution</td></tr>
+      <tr><td class="sym">$r(x,y)$</td><td>1 if the final answer of solution $y$ is correct, otherwise 0</td></tr>
+      <tr><td class="sym">$\pi_\theta$</td><td>model being trained</td></tr>
+      <tr><td class="sym">$\mu$</td><td>source of guided tokens: $y^*$ or samples from $\pi_\theta$</td></tr>
+      <tr><td class="sym">$q_t$</td><td>target distribution at token $t$, derived from $y^*$</td></tr>
+      <tr><td class="sym">$D$</td><td>per-token divergence between $\pi_\theta$ and $q_t$, e.g. KL</td></tr>
+      <tr><td class="sym">$\lambda,\ w_t$</td><td>guidance weight per step ($\lambda$) and per token ($w_t$)</td></tr>
+    </table>
+  </div>
+  <p class="pg">8</p>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <h1>A general objective</h1>
+  <div class="visual">
+    <div class="mathd" style="font-size:36px">$$\max_{\theta}\;\underbrace{\colorbox{#dde8dc}{$\mathbb{E}_{y\sim\pi_\theta}\big[\,r(x,y)\,\big]$}}_{J_{\mathrm{RL}}(\theta)\text{: expected reward}}\;-\;\underbrace{\colorbox{#efe3cc}{$\lambda\,\mathbb{E}_{y\sim\mu}\sum_{t} w_t\, D\big(\pi_\theta(\cdot\mid x,y_{&lt;t}),\,q_t\big)$}}_{L_{\mathrm{guide}}(\theta)\text{: guidance from }y^*}$$</div>
+  </div>
+  <p class="take">Each combination method corresponds to a choice of $\mu$, $q$, $D$, $\lambda$ and $w$.</p>
+  <p class="src">$y_{&lt;t}$: the first $t-1$ tokens of $y$. Both expectations are also taken over training questions $x$.</p>
+  <p class="pg">9</p>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <h1>Existing methods as special cases</h1>
+  <div class="visual">
+    <table>
+      <tr><th>Method</th><th>$\mu$: guided tokens</th><th>$q$: target</th><th>$\lambda$: guidance weight</th></tr>
+      <tr><td>GRPO only</td><td>–</td><td>–</td><td>0</td></tr>
+      <tr><td>SFT only</td><td>$y^*$</td><td>one-hot $y^*$</td><td>guidance term only</td></tr>
+      <tr><td>SFT → GRPO</td><td>$y^*$</td><td>one-hot $y^*$</td><td>step function</td></tr>
+      <tr><td>Fixed mixture</td><td>$y^*$</td><td>one-hot $y^*$</td><td>constant</td></tr>
+      <tr><td>Gradient balancing</td><td>$y^*$</td><td>one-hot $y^*$</td><td>gradient-norm ratio</td></tr>
+      <tr><td>OPD</td><td>model samples</td><td>external teacher</td><td>guidance term only</td></tr>
+      <tr><td>OPSD</td><td>model samples</td><td>$\mathrm{sg}\,\pi_\theta(\cdot\mid x,y^*,y_{&lt;t})$</td><td>guidance term only</td></tr>
+    </table>
+  </div>
+  <p class="take">Standard schedules vary only $\lambda$. On-policy distillation also changes $\mu$ and $q$.</p>
+  <p class="src">OPD: on-policy distillation. OPSD: on-policy self-distillation, with the model conditioned on $y^*$ as teacher. sg: stop-gradient.</p>
+  <p class="pg">10</p>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <p class="stamp">Updated 25/11/2026 · Nguyen Lam Phu Quy</p>
+  <h1>Explored directions</h1>
+  <div class="visual" style="flex-direction:column">
+    <div class="xrow">
+      <div><div class="name">Self-generated SFT</div><div class="sub">correct samples of $\pi_0$</div></div>
+      <div class="f">$\max_\theta \sum \log\pi_\theta(y\mid x),\ \ y\sim\pi_0,\ r(x,y)=1$</div>
+      <div class="res" style="color:var(--accent)">16.8 → 19.6<small>reference-text SFT: 12.7</small></div>
+    </div>
+    <div class="xrow">
+      <div><div class="name">Meta-OPSD (a)</div><div class="sub">inner step kept in the update</div></div>
+      <div class="f">$\theta \leftarrow \theta' + \beta\,\nabla_{\theta'} J_{\mathrm{RL}}(\theta';\,Q)$</div>
+      <div class="res" style="color:#a8742a">collapsed<small>reward 0.27 → 0.02 by rollout 8</small></div>
+    </div>
+    <div class="xrow">
+      <div><div class="name">Meta-OPSD (b)</div><div class="sub">inner step as look-ahead</div></div>
+      <div class="f">$\theta \leftarrow \theta + \beta\,\nabla_{\theta} J_{\mathrm{RL}}(\theta';\,Q)$</div>
+      <div class="res" style="color:#a8742a">collapsed<small>reward 0.38 → 0.25 by rollout 32</small></div>
+    </div>
+  </div>
+  <p class="take" style="margin-top:34px">Next: reward-directed updates with per-token weights from the teacher.</p>
+  <p class="src" style="text-wrap:balance">Qwen2.5-3B, not comparable with team baselines. Accuracy at 512 tokens. $\pi_0$: initial model. $\alpha, \beta$: inner and outer step sizes.<br>$\theta' = \theta-\alpha\nabla_\theta L_{\mathrm{SD}}(\theta;S)$: one step on the self-distillation loss $L_{\mathrm{SD}}$ (teacher: model given $y^*$) over question batch $S$. $Q$: a disjoint question batch.</p>
+  <p class="pg">11</p>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <h1>Workstreams</h1>
+  <div class="cols">
+    <div class="col"><div class="bar" style="background:var(--t1)"></div><b>SFT/RL combination</b>Le Ho Bao Nhat, Dinh Cong Huy Hoang<p style="color:var(--grey);margin-top:14px">Guidance term and weighting, paired data, shared verifier, ablations.</p></div>
+    <div class="col"><div class="bar" style="background:var(--t2)"></div><b>RL optimisation</b>Nguyen Hong Son<p style="color:var(--grey);margin-top:14px">GRPO training and rollout pipeline. Separation of algorithmic gains from engine speed.</p></div>
+    <div class="col"><div class="bar" style="background:var(--t3)"></div><b>On-policy guidance</b>Nguyen Lam Phu Quy<p style="color:var(--grey);margin-top:14px">Model-written SFT data and self-distillation from the reference solution (slide 11).</p></div>
+  </div>
+  <p class="take" style="margin-top:90px">Research question: how can a single training run combine the dense signal of SFT with the on-policy learning of RL?</p>
+  <p class="src">Shared: integration, frozen evaluation and the final report. All methods are compared at an equal GPU-hour budget.</p>
+  <p class="pg">12</p>
+</section>
+
+<!-- A1 -->
+<section class="slide">
+  <h1>Appendix: answer length budget</h1>
+  <div class="visual">
+    <svg width="830" height="410" viewBox="0 0 960 475">
+      <line x1="60" y1="380" x2="900" y2="380" stroke="var(--ink)" stroke-width="2"/>
+      <polyline points="150,184.2 350,83.5 550,68.6 750,61.8" fill="none" stroke="var(--grey)" stroke-width="3"/>
+      <g stroke="var(--ink)" stroke-width="2">
+        <line x1="150" y1="177.4" x2="150" y2="191.0"/><line x1="350" y1="69.9" x2="350" y2="97.1"/>
+        <line x1="550" y1="60.4" x2="550" y2="76.8"/><line x1="750" y1="44.1" x2="750" y2="79.5"/>
+      </g>
+      <circle cx="150" cy="184.2" r="10" fill="var(--accent)"/>
+      <circle cx="350" cy="83.5" r="9" fill="var(--grey)"/><circle cx="550" cy="68.6" r="9" fill="var(--grey)"/><circle cx="750" cy="61.8" r="9" fill="var(--grey)"/>
+      <g font-size="28" text-anchor="middle">
+        <text x="150" y="232" fill="var(--accent)" font-weight="600">14.4</text>
+        <text x="350" y="52">21.8</text><text x="550" y="40">22.9</text><text x="750" y="30">23.4</text>
+      </g>
+      <g font-size="25" text-anchor="middle" fill="var(--grey)">
+        <text x="150" y="418">512</text><text x="350" y="418">1,024</text><text x="550" y="418">2,048</text><text x="750" y="418">4,096</text>
+        <text x="450" y="462" font-size="23">max answer tokens</text>
+      </g>
+    </svg>
+  </div>
+  <p class="take">Reducing the budget from 4,096 to 512 tokens lowers the accuracy of the untrained model by 9 points.</p>
+  <p class="src">Untrained Qwen3-0.6B, no thinking mode, same benchmarks and seeds as slide 4. All training results use a 512-token budget.</p>
+  <p class="pg">A1</p>
+</section>
+
+
+<!-- A2 -->
+<section class="slide">
+  <h1>Appendix: per-benchmark scores</h1>
+  <div class="visual">
+    <table class="num">
+      <tr><th>Method</th><th class="c">Max tokens</th><th class="c">AIME24</th><th class="c">AMC23</th><th class="c">MATH500</th><th class="c">Minerva</th><th class="c">Olympiad</th></tr>
+      <tr><td>No training</td><td class="c">4,096</td><td class="c">2.2 ± 1.9</td><td class="c">27.5 ± 8.7</td><td class="c">52.7 ± 1.7</td><td class="c">14.2 ± 2.6</td><td class="c">20.5 ± 0.5</td></tr>
+      <tr><td>No training</td><td class="c">2,048</td><td class="c">4.4 ± 3.9</td><td class="c">25.0 ± 4.3</td><td class="c">50.8 ± 0.9</td><td class="c">14.1 ± 0.8</td><td class="c">20.4 ± 0.7</td></tr>
+      <tr><td>No training</td><td class="c">1,024</td><td class="c">1.1 ± 1.9</td><td class="c">25.0 ± 2.5</td><td class="c">50.2 ± 0.5</td><td class="c">14.0 ± 1.0</td><td class="c">18.5 ± 1.2</td></tr>
+      <tr><td>No training</td><td class="c">512</td><td class="c">0.0 ± 0.0</td><td class="c">10.0 ± 2.5</td><td class="c">40.5 ± 0.6</td><td class="c">12.4 ± 0.2</td><td class="c">9.0 ± 0.8</td></tr>
+      <tr><td>SFT only</td><td class="c">512</td><td class="c">1.1 ± 1.9</td><td class="c">5.8 ± 2.9</td><td class="c">23.0 ± 0.2</td><td class="c">6.0 ± 1.1</td><td class="c">4.6 ± 0.4</td></tr>
+      <tr><td>GRPO only</td><td class="c">512</td><td class="c">2.2 ± 1.9</td><td class="c">23.3 ± 3.8</td><td class="c">51.7 ± 0.6</td><td class="c">14.6 ± 0.9</td><td class="c">17.8 ± 0.6</td></tr>
+      <tr><td>SFT → GRPO</td><td class="c">512</td><td class="c">0.0 ± 0.0</td><td class="c">13.3 ± 5.8</td><td class="c">45.5 ± 0.4</td><td class="c">12.7 ± 1.8</td><td class="c">14.7 ± 1.1</td></tr>
+    </table>
+  </div>
+  <p class="src">Qwen3-0.6B, no thinking mode. Accuracy (%), mean ± std over 3 seeds. Averages are on slides 4, 7 and A1.</p>
+  <p class="pg">A2</p>
+</section>
+
+</body>
+</html>

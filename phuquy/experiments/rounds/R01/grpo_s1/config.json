@@ -1,0 +1,21 @@
+{
+  "args": {
+    "idea": "grpo",
+    "opt": [],
+    "seed": 1,
+    "epochs": 1.0,
+    "max_rollouts": null,
+    "prompts_per_rollout": 128,
+    "limit": null,
+    "num_gen": 8,
+    "max_completion": 2048,
+    "lr": 1e-05,
+    "lora_r": 32,
+    "lora_alpha": 64,
+    "micro_batch": 4,
+    "vllm_mem": 0.4,
+    "reward_workers": 8,
+    "out": "runs/r01/grpo_s1"
+  },
+  "opts": {}
+}

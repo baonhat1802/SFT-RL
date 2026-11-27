@@ -1,0 +1,3 @@
+metaopsd_s1        metaopsd
+metaopsd_h0_s1     metaopsd    --opt hessian=0
+metaopsd_same_s1   metaopsd    --opt query=same

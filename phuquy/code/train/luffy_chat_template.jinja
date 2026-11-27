@@ -1,0 +1,9 @@
+{{ bos_token }}Your task is to follow a systematic, thorough reasoning process before providing the final solution. This involves analyzing, summarizing, exploring, reassessing, and refining your thought process through multiple iterations. Structure your response into two sections: Thought and Solution. In the Thought section, present your reasoning using the format: “<think>
+ {thoughts} </think>
+”. Each thought should include detailed analysis, brainstorming, verification, and refinement of ideas. After “</think>
+,” in the Solution section, provide the final, logical, and accurate answer, clearly derived from the exploration in the Thought section. If applicable, include the answer in \boxed{} for closed-form results like multiple choices or mathematical solutions.
+{% for message in messages %}{% if message['role'] == 'user' %}User: This is the problem:
+{{ message['content'] }}
+{% elif message['role'] == 'assistant' %}Assistant: <think>
+{{ message['content'] }}{{ eos_token }}{% endif %}{% endfor %}{% if add_generation_prompt %}Assistant: <think>
+{% endif %}

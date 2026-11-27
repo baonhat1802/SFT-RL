@@ -1,0 +1,14 @@
+# tên  idea  [--opt ...]   — chạy theo thứ tự ưu tiên bằng code/beat/run_jobs.sh; explore 1 seed, 1 epoch curated, 512 token
+grpo_s1            grpo
+metaopsd_v3_s1     metaopsd    --opt keep_inner=0
+metaopsd_s1        metaopsd
+guide_tokw_s1      guide_tokw
+opsd_s1            opsd
+opsd_dense_s1      opsd        --opt allfail_only=0
+potential_s1       potential
+fade_s1            fade
+compress_sd_s1     compress_sd
+guide_s1           guide_tokw  --opt tokw=0
+metaopsd_v3_h0_s1   metaopsd   --opt keep_inner=0 --opt hessian=0
+metaopsd_v3_same_s1 metaopsd   --opt keep_inner=0 --opt query=same
+grpo_2ep_s1        grpo        --epochs 2

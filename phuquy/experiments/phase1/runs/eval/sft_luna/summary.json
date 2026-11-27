@@ -1,0 +1,50 @@
+{
+  "model": "Qwen/Qwen2.5-3B",
+  "adapter": "runs/sft_luna/final_adapter",
+  "max_tokens": 512,
+  "n": 4,
+  "budget_includes_prompt": false,
+  "temperature": 0.6,
+  "sets": {
+    "aime24": {
+      "n_q": 30,
+      "mean": 0.0,
+      "std": 0.0,
+      "truncated_pct": 5.8,
+      "mean_tokens": 261.4
+    },
+    "amc23": {
+      "n_q": 40,
+      "mean": 14.4,
+      "std": 2.4,
+      "truncated_pct": 0.6,
+      "mean_tokens": 178.7
+    },
+    "math500": {
+      "n_q": 500,
+      "mean": 31.8,
+      "std": 0.6,
+      "truncated_pct": 0.5,
+      "mean_tokens": 129.7
+    },
+    "minerva_math": {
+      "n_q": 272,
+      "mean": 10.5,
+      "std": 1.1,
+      "truncated_pct": 0.5,
+      "mean_tokens": 155.0
+    },
+    "olympiadbench": {
+      "n_q": 675,
+      "mean": 6.9,
+      "std": 0.5,
+      "truncated_pct": 4.5,
+      "mean_tokens": 217.4
+    }
+  },
+  "DEV": 16.4,
+  "DEV_std": 0.6,
+  "TB": 12.7,
+  "TB_std": 0.7,
+  "truncated_pct": 2.4
+}

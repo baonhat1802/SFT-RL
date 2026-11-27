@@ -1,0 +1,50 @@
+{
+  "model": "Qwen/Qwen2.5-3B",
+  "adapter": "runs/r01/grpo_s1/final_adapter",
+  "max_tokens": 512,
+  "n": 4,
+  "budget_includes_prompt": false,
+  "temperature": 0.6,
+  "sets": {
+    "aime24": {
+      "n_q": 30,
+      "mean": 0.8,
+      "std": 1.7,
+      "truncated_pct": 89.2,
+      "mean_tokens": 503.5
+    },
+    "amc23": {
+      "n_q": 40,
+      "mean": 15.6,
+      "std": 3.8,
+      "truncated_pct": 80.6,
+      "mean_tokens": 487.4
+    },
+    "math500": {
+      "n_q": 500,
+      "mean": 45.0,
+      "std": 0.5,
+      "truncated_pct": 50.0,
+      "mean_tokens": 436.8
+    },
+    "minerva_math": {
+      "n_q": 272,
+      "mean": 14.4,
+      "std": 1.8,
+      "truncated_pct": 68.1,
+      "mean_tokens": 467.8
+    },
+    "olympiadbench": {
+      "n_q": 675,
+      "mean": 12.0,
+      "std": 1.1,
+      "truncated_pct": 81.4,
+      "mean_tokens": 492.3
+    }
+  },
+  "DEV": 23.8,
+  "DEV_std": 0.8,
+  "TB": 17.6,
+  "TB_std": 0.3,
+  "truncated_pct": 68.8
+}
