@@ -1,0 +1,332 @@
+{
+  "reward": 0.2763671875,
+  "allfail": 0.32421875,
+  "samples": 2048,
+  "mixed_groups": 171,
+  "auc_neg_length": 0.4432938856015779,
+  "full_auc_mean_phi": 0.6568047337278107,
+  "full_auc_sum_phi": 0.6232741617357002,
+  "full_auc_pre_boxed": 0.6400394477317555,
+  "full_auc_boxed_region": 0.6020710059171598,
+  "full_auc_neg_kl": 0.6193293885601578,
+  "full_share_absphi_boxed_region": 0.07760642468929291,
+  "full_share_tokens_boxed_region": 0.06605272899070858,
+  "full_frac_abs_phi_gt1": 0.0117796629238766,
+  "full_mean_phi": -0.025738831609487534,
+  "full_corr_centred_phi_A_tokens": 0.006854835493140833,
+  "full_corr_centred_phi_A_pre_boxed": 0.006120095606444843,
+  "full_var_cv_token": 0.048629794269800186,
+  "full_var_A_token": 0.18846703128075937,
+  "full_corr_seqsum_centred_phi_A": 0.16212526419384563,
+  "concise_auc_mean_phi": 0.6686390532544378,
+  "concise_auc_sum_phi": 0.618836291913215,
+  "concise_auc_pre_boxed": 0.6474358974358975,
+  "concise_auc_boxed_region": 0.6282051282051282,
+  "concise_auc_neg_kl": 0.6257396449704142,
+  "concise_share_absphi_boxed_region": 0.07030501216650009,
+  "concise_share_tokens_boxed_region": 0.06605272899070858,
+  "concise_frac_abs_phi_gt1": 0.012985113489152551,
+  "concise_mean_phi": -0.02847176603972912,
+  "concise_corr_centred_phi_A_tokens": 0.00615158816836412,
+  "concise_corr_centred_phi_A_pre_boxed": 0.005646788068862579,
+  "concise_var_cv_token": 0.0521077997982502,
+  "concise_var_A_token": 0.18846703128075937,
+  "concise_corr_seqsum_centred_phi_A": 0.14386888582895524,
+  "placebo_auc_mean_phi": 0.6425049309664694,
+  "placebo_auc_sum_phi": 0.6252465483234714,
+  "placebo_auc_pre_boxed": 0.6484220907297831,
+  "placebo_auc_boxed_region": 0.47485207100591714,
+  "placebo_auc_neg_kl": 0.6370808678500987,
+  "placebo_share_absphi_boxed_region": 0.07842434197664261,
+  "placebo_share_tokens_boxed_region": 0.06605272899070858,
+  "placebo_frac_abs_phi_gt1": 0.005327287864809523,
+  "placebo_mean_phi": -0.013079830445349216,
+  "placebo_corr_centred_phi_A_tokens": 0.003818724975836835,
+  "placebo_corr_centred_phi_A_pre_boxed": 0.004756507605211709,
+  "placebo_var_cv_token": 0.027510004118084908,
+  "placebo_var_A_token": 0.18846703128075937,
+  "placebo_corr_seqsum_centred_phi_A": 0.09118168720862836,
+  "top_tokens": [
+    {
+      "r": 0.0,
+      "phi": -1.15,
+      "pos": 0.53,
+      "in_boxed_region": false,
+      "ctx": "_n = 2008\\)\n\nWe need to ⟦ solve⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -2.64,
+      "pos": 0.04,
+      "in_boxed_region": false,
+      "ctx": " these steps:\n\n1. **Calculate the total number of ways ⟦ the⟧"
+    },
+    {
+      "r": 1.0,
+      "phi": -2.56,
+      "pos": 0.17,
+      "in_boxed_region": false,
+      "ctx": " \\]\n\nFirst, let's identify the coordinates of the vertices ⟦ relative⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -1.43,
+      "pos": 0.39,
+      "in_boxed_region": false,
+      "ctx": "aurant\nunicorn\naurant\naurant Please respond by writing a ⟦ program⟧"
+    },
+    {
+      "r": 1.0,
+      "phi": 1.29,
+      "pos": 0.93,
+      "in_boxed_region": true,
+      "ctx": " gallons} \\]\n\nSo, the Powerjet will pump \\ ⟦(\\⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -3.26,
+      "pos": 0.04,
+      "in_boxed_region": false,
+      "ctx": "}\\), we can follow these steps:\n\n1. First, ⟦ normalize⟧"
+    },
+    {
+      "r": 1.0,
+      "phi": 2.08,
+      "pos": 0.03,
+      "in_boxed_region": false,
+      "ctx": " find the mean of \\( u \\) and \\( v \\ ⟦)⟧"
+    },
+    {
+      "r": 1.0,
+      "phi": -2.12,
+      "pos": 0.09,
+      "in_boxed_region": false,
+      "ctx": " \\((x - 5)^2 = 9\\ ⟦):\n⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -1.65,
+      "pos": 0.09,
+      "in_boxed_region": false,
+      "ctx": " pela confusão causada. Aqui está a solução ⟦ novamente⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -1.82,
+      "pos": 0.01,
+      "in_boxed_region": false,
+      "ctx": "The number of ⟦ consecutive⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -1.54,
+      "pos": 0.09,
+      "in_boxed_region": false,
+      "ctx": " (r-p)(r-q)$. This yields:\n\n\\ ⟦begin⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -1.86,
+      "pos": 0.28,
+      "in_boxed_region": false,
+      "ctx": "1_2$, we can use the binary addition method:\n\n ⟦``⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -2.26,
+      "pos": 0.0,
+      "in_boxed_region": false,
+      "ctx": "ﰙ\n炟炟.TrimSpace(\n ⟦炟⟧"
+    },
+    {
+      "r": 1.0,
+      "phi": -5.88,
+      "pos": 0.83,
+      "in_boxed_region": false,
+      "ctx": " the area of triangle $ABC$ is given by:\n\\[ ⟦A⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -8.71,
+      "pos": 0.06,
+      "in_boxed_region": false,
+      "ctx": " the word MISSISSIPPI:\n\n- There are 1 ⟦ M⟧"
+    },
+    {
+      "r": 1.0,
+      "phi": -2.06,
+      "pos": 0.51,
+      "in_boxed_region": false,
+      "ctx": "240 - x}{2} \\right) = ⟦ ⟧"
+    },
+    {
+      "r": 1.0,
+      "phi": -1.68,
+      "pos": 0.2,
+      "in_boxed_region": false,
+      "ctx": "Step 1: Remove fractions by multiplying both sides by  ⟦2⟧"
+    },
+    {
+      "r": 1.0,
+      "phi": -2.97,
+      "pos": 0.02,
+      "in_boxed_region": false,
+      "ctx": "Let's denote the measure of angle ⟦ $⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -2.63,
+      "pos": 0.99,
+      "in_boxed_region": false,
+      "ctx": "0^\\circ\\).\n\nThus, the maximum angle is  ⟦9⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -2.29,
+      "pos": 0.03,
+      "in_boxed_region": false,
+      "ctx": "The given expression can be factored as ⟦ $(⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -4.6,
+      "pos": 0.92,
+      "in_boxed_region": false,
+      "ctx": " probability that she guesses correctly in any one of these cases is ⟦ $\\⟧"
+    },
+    {
+      "r": 1.0,
+      "phi": -6.55,
+      "pos": 0.18,
+      "in_boxed_region": false,
+      "ctx": "r+3)(r+1) = (r- ⟦2⟧"
+    },
+    {
+      "r": 1.0,
+      "phi": -2.48,
+      "pos": 0.84,
+      "in_boxed_region": false,
+      "ctx": "2.1 pints / 1 liter\n\nSo, ⟦ approximately⟧"
+    },
+    {
+      "r": 1.0,
+      "phi": 0.93,
+      "pos": 0.06,
+      "in_boxed_region": false,
+      "ctx": " **Determine the side length of Square A:**\n   ⟦ The⟧"
+    },
+    {
+      "r": 1.0,
+      "phi": -4.86,
+      "pos": 0.07,
+      "in_boxed_region": false,
+      "ctx": ",∜,⋅⋅⋅$$. Let's denote the ⟦ $⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -4.06,
+      "pos": 0.98,
+      "in_boxed_region": false,
+      "ctx": "Therefore, the possible slopes of the line are \\(m \\ ⟦le⟧"
+    },
+    {
+      "r": 1.0,
+      "phi": -1.3,
+      "pos": 0.99,
+      "in_boxed_region": true,
+      "ctx": ", the perimeter of the rectangle is $\\boxed{20 ⟦}⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -3.66,
+      "pos": 0.97,
+      "in_boxed_region": true,
+      "ctx": " 6y + 53 = 0\\).\n ⟦Please⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -1.86,
+      "pos": 0.31,
+      "in_boxed_region": false,
+      "ctx": "CD).\n\nHere's the step-by-step reasoning:\n\n1. ⟦ The⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -3.24,
+      "pos": 0.06,
+      "in_boxed_region": false,
+      "ctx": " Let's solve this step-by-step using the given operation definition ⟦ (@⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -1.75,
+      "pos": 0.04,
+      "in_boxed_region": false,
+      "ctx": "ax^2 + bx + c}\\). Let's denote ⟦ this⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -6.32,
+      "pos": 0.97,
+      "in_boxed_region": true,
+      "ctx": " \\frac{3}{2}}=\\boxed{\\frac{ ⟦9⟧"
+    },
+    {
+      "r": 1.0,
+      "phi": -2.93,
+      "pos": 0.04,
+      "in_boxed_region": false,
+      "ctx": "), we can follow these steps:\n\n1. **Calculate the ⟦ magnitude⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -2.67,
+      "pos": 0.01,
+      "in_boxed_region": false,
+      "ctx": "To solve for the sum of all possible values of ⟦ $⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -2.69,
+      "pos": 0.88,
+      "in_boxed_region": false,
+      "ctx": "   \\[ A \\approx 671.9 ⟦6⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -3.84,
+      "pos": 0.88,
+      "in_boxed_region": false,
+      "ctx": " -28\n\\]\n\nThe absolute value of the determinant ⟦ gives⟧"
+    },
+    {
+      "r": 1.0,
+      "phi": 1.17,
+      "pos": 0.02,
+      "in_boxed_region": false,
+      "ctx": "To subtract $101 ⟦_⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -2.8,
+      "pos": 0.8,
+      "in_boxed_region": true,
+      "ctx": " Problem: So, the value of \\(r = \\boxed ⟦{⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -2.53,
+      "pos": 0.02,
+      "in_boxed_region": false,
+      "ctx": "Given the congruence ⟦ $⟧"
+    },
+    {
+      "r": 0.0,
+      "phi": -4.24,
+      "pos": 0.19,
+      "in_boxed_region": false,
+      "ctx": " the third root, we can use the fact that we know ⟦ two⟧"
+    }
+  ],
+  "time": 731.3
+}

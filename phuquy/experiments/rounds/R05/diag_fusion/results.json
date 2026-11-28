@@ -1,0 +1,77 @@
+{
+  "gen": {
+    "questions": 640,
+    "mixed": 415,
+    "allfail": 220,
+    "allcorrect": 5,
+    "allfail_rescued_by_extra": 93,
+    "hard_used": 60
+  },
+  "fit_groups": 100,
+  "test_groups": 100,
+  "coef_corrected": {
+    "intercept_class": {
+      "prose": -0.04272,
+      "mnum": 0.0478,
+      "msym": 0.05141,
+      "num_out": -0.05741,
+      "ws": -0.05768,
+      "box": 0.04995
+    },
+    "intercept_pos": [
+      0.00443,
+      -0.00478,
+      -0.0083
+    ],
+    "slope_d_by_class": {
+      "prose": 0.00091,
+      "mnum": 0.05176,
+      "msym": 0.03737,
+      "num_out": 0.05121,
+      "ws": 0.0762,
+      "box": 0.05452
+    }
+  },
+  "coef_global": [
+    0.0331,
+    0.00121
+  ],
+  "mean_d_by_class": {
+    "prose": -0.05266674614650507,
+    "mnum": -0.008400588081961459,
+    "msym": -0.014869040764441727,
+    "num_out": -0.021378230751025695,
+    "ws": -0.020741902059031734,
+    "box": -0.012853673841807668
+  },
+  "T1_auc": {
+    "raw": 0.611172619047619,
+    "global": 0.611172619047619,
+    "noteacher": 0.6980535714285715,
+    "corrected": 0.7071190476190476
+  },
+  "T2_auc32": {
+    "raw": 0.6735073276515006,
+    "global": 0.6735073276515006,
+    "noteacher": 0.6386048319652732,
+    "corrected": 0.6460596949128665
+  },
+  "T1_grad": {
+    "anchor_grpo_halfA_vs_halfB": 0.06901763379573822,
+    "cos_raw_vs_grpo": 0.13030602037906647,
+    "cos_global_vs_grpo": 0.1280975341796875,
+    "cos_noteacher_vs_grpo": 0.11671990156173706,
+    "cos_corrected_vs_grpo": 0.19231730699539185
+  },
+  "T2_grad": {
+    "questions": 40,
+    "anchor_grpo32_halfA_vs_halfB": 0.025828327983617783,
+    "cos_raw_on8failed_vs_grpo32": 0.14957736432552338,
+    "cos_global_on8failed_vs_grpo32": 0.1467934101819992,
+    "cos_noteacher_on8failed_vs_grpo32": 0.026358436793088913,
+    "cos_corrected_on8failed_vs_grpo32": 0.0706818699836731
+  },
+  "T1_PASS": true,
+  "T2_PASS": false,
+  "time": 1889.9
+}

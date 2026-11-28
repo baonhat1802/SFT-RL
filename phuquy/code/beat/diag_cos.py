@@ -63,6 +63,15 @@ def main():
     ap.add_argument("--causal-sweep", action="store_true",
                     help="R03 pre-screens: counterfactual same-style pairs (y* vs y* with wrong values), invariant (AND-mask) "
                          "gradients across voices (y* / own correct solutions / GRPO), placebo-differenced teacher")
+    ap.add_argument("--dr-sweep", action="store_true",
+                    help="R04-1: y*-teacher log-ratio as an action-dependent control variate with exact full-vocabulary "
+                         "correction (AIPW / doubly robust): E[update] = GRPO gradient; does it reduce GRPO noise?")
+    ap.add_argument("--dr-samples", type=int, default=192, help="random samples per half (all groups, A = 0 included)")
+    ap.add_argument("--skeleton-sweep", action="store_true",
+                    help="causal discovery on y*: delete each step, measure the drop in log-prob of every later step and of the "
+                         "answer -> step DAG; skeleton = ancestors of the answer. Transfer cosine of SFT on skeleton vs the rest")
+    ap.add_argument("--skel-taus", default="0.1,0.5", help="edge thresholds: mean per-token log-prob drop (nats)")
+    ap.add_argument("--model", default=None, help="override the base model (student-size sweep)")
     ap.add_argument("--out", required=True)
     a = ap.parse_args()
 
@@ -76,6 +85,8 @@ def main():
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
     from beat.loop import HINT_TEMPLATE, TEACHER_TEMPLATE
     from train.common import BASE_MODEL, GRPO, LORA, configure_tokenizer
+    if a.model:
+        BASE_MODEL = a.model
     from train.data import load_track
     from train.models import eos_ids
     from train.rewards import score_all
@@ -361,6 +372,70 @@ def main():
             res["time"] = round(time.time() - t0, 1)
             results.append(res); print("BATCH " + json.dumps(res), flush=True)
             continue
+        if a.dr_sweep:
+            from torch.utils.checkpoint import checkpoint as _ckpt
+            base_ = model.get_base_model(); body_, head_ = base_.model, base_.lm_head
+
+            def _cv_chunk(hs, ht, tg):
+                lS = torch.log_softmax(head_(hs).float(), -1)
+                with torch.no_grad():
+                    phi = torch.log_softmax(head_(ht).float(), -1) - lS.detach()
+                samp = (phi.gather(-1, tg[:, None])[:, 0] * lS.gather(-1, tg[:, None])[:, 0]).sum()
+                return samp - (lS.exp() * phi).sum(), phi.gather(-1, tg[:, None])[:, 0].sum().detach()
+
+            def cv_grad(S, tkey):
+                """grad of sum_t [phi_t(a_t) log pi(a_t) - sum_a pi(a) phi_t(a)] / ntok, phi = log p_T - log p_S (detached).
+                Zero in expectation over the student's own sampling; returns (gradient, mean phi(a_t))."""
+                for p in params:
+                    p.grad = None
+                model.train()
+                ntok = sum(len(x["comp"]) for x in S); phis = []
+                for x in S:
+                    n = len(x["comp"]); comp = torch.tensor(x["comp"], device="cuda")
+                    tctx = rows[x["i"]][tkey]
+                    with torch.no_grad():
+                        ht = body_(input_ids=torch.tensor([tctx + x["comp"]], device="cuda"), use_cache=False).last_hidden_state[0]
+                        ht = ht[len(tctx) - 1:len(tctx) - 1 + n]
+                    hs = body_(input_ids=torch.tensor([x["ctx"] + x["comp"]], device="cuda"), use_cache=False).last_hidden_state[0]
+                    hs = hs[len(x["ctx"]) - 1:len(x["ctx"]) - 1 + n]
+                    tot = 0.0
+                    for s0 in range(0, n, 512):
+                        term, ph = _ckpt(_cv_chunk, hs[s0:s0 + 512], ht[s0:s0 + 512], comp[s0:s0 + 512], use_reentrant=False)
+                        tot = tot + term; phis.append(float(ph))
+                    (tot / ntok).backward()
+                    del ht, hs
+                g = torch.cat([(p.grad if p.grad is not None else torch.zeros_like(p)).float().flatten() for p in params])
+                for p in params:
+                    p.grad = None
+                return g, sum(phis) / ntok
+
+            SA = random.sample(A, min(len(A), a.dr_samples)); SB = random.sample(B, min(len(B), a.dr_samples))
+            gGA, gGB = grad_of(SA, "grpo"), grad_of(SB, "grpo")
+            res["dr_grpo_AB"] = cos(gGA, gGB)          # anchor on these sets (A = 0 samples included)
+            for tname, tkey in (("full", "hp_ids"), ("concise", "tp_ids")):
+                cA, phA = cv_grad(SA, tkey); cB, phB = cv_grad(SB, tkey)
+                res[f"dr_{tname}_phi_mean"] = (phA + phB) / 2
+                res[f"dr_{tname}_cvnorm_ratio"] = float((cA.norm() / (gGA.norm() + 1e-12) + cB.norm() / (gGB.norm() + 1e-12)) / 2)
+                # anchors: the control variate has zero mean -> no alignment across halves or with the reward gradient
+                res[f"dr_{tname}_cv_AB"] = cos(cA, cB)
+                res[f"dr_{tname}_cv_vs_grpoB"] = cos(cA, gGB)
+                res[f"dr_{tname}_cv_vs_grpoA_same"] = cos(cA, gGA)   # same samples: negative => variance can be cut
+                for beta in (-2.0, -1.0, -0.5, -0.25, 0.25, 0.5, 1.0):
+                    dA, dB = gGA + beta * cA, gGB + beta * cB
+                    res[f"dr_{tname}_b{beta:g}_AB"] = cos(dA, dB)
+                    res[f"dr_{tname}_b{beta:g}_vs_grpoB"] = cos(dA, gGB)
+                bA = -float(gGA @ cA) / float(cA @ cA + 1e-20); bB = -float(gGB @ cB) / float(cB @ cB + 1e-20)
+                res[f"dr_{tname}_bstar"] = (bA + bB) / 2
+                dA, dB = gGA + bA * cA, gGB + bB * cB
+                res[f"dr_{tname}_bstar_AB"] = cos(dA, dB)
+                res[f"dr_{tname}_bstar_normratio"] = float((dA.norm() / gGA.norm() + dB.norm() / gGB.norm()) / 2)
+                # cross-fitted beta: the coefficient fitted on one half is applied to the other half
+                res[f"dr_{tname}_bcross_AB"] = cos(gGA + bB * cA, gGB + bA * cB)
+                res[f"dr_{tname}_bcross_vs_grpoB"] = cos(gGA + bB * cA, gGB)
+            res["n"].update({"dr_A": len(SA), "dr_B": len(SB)})
+            res["time"] = round(time.time() - t0, 1)
+            results.append(res); print("BATCH " + json.dumps(res), flush=True)
+            continue
         if a.causal_sweep:
             rng = random.Random(a.seed * 1000 + b)
 
@@ -504,6 +579,124 @@ def main():
             res["time"] = round(time.time() - t0, 1)
             results.append(res); print("BATCH " + json.dumps(res), flush=True)
             continue
+        if a.skeleton_sweep:
+            qA = sorted({x["i"] for x in A})[:a.max_support]
+            taus = [float(v) for v in a.skel_taus.split(",") if v]
+            eos_tok = tok.convert_tokens_to_ids(tok.eos_token)
+
+            def steps_of(ref):
+                """Split y* into steps at sentence ends / line breaks outside math; the step holding \\boxed and all after = answer."""
+                spans = [(m.start(), m.end()) for m in MATH.finditer(ref)]
+                inside = lambda c: any(st < c < e for st, e in spans)
+                cuts = [m.end() for m in _re.finditer(r"(?<=[.;:])\s+|\n+", ref) if not inside(m.start())]
+                bounds = [0] + [c for c in cuts if 0 < c < len(ref)] + [len(ref)]
+                st = [ref[u:v] for u, v in zip(bounds, bounds[1:]) if ref[u:v]]
+                bx = next((k for k, t in enumerate(st) if "\\boxed" in t), len(st) - 1)
+                return st[:bx] + ["".join(st[bx:])]           # last element = answer node
+
+            SK, stats = {}, {"n_steps": [], "edges": {t: [] for t in taus}, "skel_frac": {t: [] for t in taus},
+                             "prose_in_skel": {t: [] for t in taus}, "prose_in_rest": {t: [] for t in taus},
+                             "direct_ans_drop": []}
+            model.eval()
+            for qi in qA:
+                st = steps_of(rows[qi]["ref_txt"])
+                tks, cont = [], []
+                for k, t in enumerate(st):
+                    e = tok(t, add_special_tokens=False, return_offsets_mapping=True)
+                    sp_t = [(m.start(), m.end()) for m in MATH.finditer(t)]
+                    tks.append(e["input_ids"])
+                    # content tokens: digits inside math (computed values); the answer node counts entirely
+                    cont.append([k == len(st) - 1 or (any(ch.isdigit() for ch in t[u:v]) and any(u < e2 and v > s2 for s2, e2 in sp_t))
+                                 for u, v in e["offset_mapping"]])
+                n = len(st) - 1                               # deletable steps
+                if n < 2:
+                    continue
+                full = [t for tt in tks for t in tt] + [eos_tok]
+                comps = [full] + [[t for k, tt in enumerate(tks) if k != d for t in tt] + [eos_tok] for d in range(n)]
+                with torch.no_grad():
+                    lps = [lp.float().cpu() for lp in logps_of([rows[qi]["p_ids"]] * len(comps), comps, grad=False)]
+                off = np.cumsum([0] + [len(tt) for tt in tks])  # token offset of each step in full
+                # drop[d][j] for j > d: mean drop of log-prob over the CONTENT tokens of step j (j = n: answer node incl. eos).
+                # Measuring all tokens would mostly pick up fluency (any deleted sentence makes the next one less predictable).
+                drop = np.zeros((n, n + 1))
+                for d in range(n):
+                    shift = len(tks[d])
+                    for j in range(d + 1, n + 1):
+                        cm = torch.tensor(cont[j] + ([True] if j == n else []), dtype=torch.bool)
+                        if not bool(cm.any()):
+                            continue
+                        L = len(cm)
+                        drop[d, j] = float((lps[0][off[j]:off[j] + L] - lps[d + 1][off[j] - shift:off[j] - shift + L])[cm].mean())
+                stats["n_steps"].append(n); stats["direct_ans_drop"].append(float(drop[:, n].mean()))
+                M = classes(qi) if full == rows[qi]["ref_ids"] else None
+                SK[qi] = {"full": full, "tks": tks, "n": n, "masks": {}}
+                for tau in taus:
+                    anc, frontier = {n}, [n]
+                    while frontier:
+                        j = frontier.pop()
+                        for d in range(min(j, n)):
+                            if d not in anc and drop[d, j] > tau:
+                                anc.add(d); frontier.append(d)
+                    keep = torch.zeros(len(full), device="cuda"); ans = torch.zeros(len(full), device="cuda")
+                    for k in range(n + 1):
+                        if k in anc:
+                            keep[off[k]:off[k] + len(tks[k])] = 1
+                    ans[off[n]:] = 1; keep[-1] = 1
+                    SK[qi]["masks"][tau] = (keep, ans, sorted(anc - {n}))
+                    stats["edges"][tau].append(float((drop[:, :] > tau).sum()) / max(1, n * (n + 1) / 2))
+                    nonans = 1 - ans
+                    stats["skel_frac"][tau].append(float((keep * nonans).sum() / nonans.sum().clamp(min=1)))
+                    if M is not None:
+                        pr = M["prose"] * nonans
+                        stats["prose_in_skel"][tau].append(float((pr * keep).sum() / (keep * nonans).sum().clamp(min=1)))
+                        stats["prose_in_rest"][tau].append(float((pr * (1 - keep)).sum() / (nonans * (1 - keep)).sum().clamp(min=1)))
+            Qs = sorted(SK)
+            res["sk_q"] = len(Qs)
+            if not Qs:
+                results.append(res); print("BATCH " + json.dumps(res), flush=True)
+                continue
+            res["sk_n_steps"] = float(np.mean(stats["n_steps"])); res["sk_direct_ans_drop"] = float(np.mean(stats["direct_ans_drop"]))
+            ones = lambda q: torch.ones(len(SK[q]["full"]), device="cuda")
+            g_all, _ = nll_grad([(rows[q]["p_ids"], SK[q]["full"], ones(q)) for q in Qs]); res["sk_all_cos"] = cos(g_all, gB)
+            g_ans, _ = nll_grad([(rows[q]["p_ids"], SK[q]["full"], SK[q]["masks"][taus[0]][1]) for q in Qs])
+            res["sk_answer_only_cos"] = cos(g_ans, gB)
+            rng_m = np.random.default_rng(a.seed + b)
+            for tau in taus:
+                tg = f"{tau:g}"
+                res[f"sk_frac_{tg}"] = float(np.mean(stats["skel_frac"][tau])); res[f"sk_edges_{tg}"] = float(np.mean(stats["edges"][tau]))
+                res[f"sk_prose_skel_{tg}"] = float(np.mean(stats["prose_in_skel"][tau])) if stats["prose_in_skel"][tau] else None
+                res[f"sk_prose_rest_{tg}"] = float(np.mean(stats["prose_in_rest"][tau])) if stats["prose_in_rest"][tau] else None
+                g, _ = nll_grad([(rows[q]["p_ids"], SK[q]["full"], SK[q]["masks"][tau][0]) for q in Qs])
+                res[f"sk_skel_cos_{tg}"] = cos(g, gB)
+                g, _ = nll_grad([(rows[q]["p_ids"], SK[q]["full"], 1 - SK[q]["masks"][tau][0]) for q in Qs])
+                res[f"sk_rest_cos_{tg}"] = cos(g, gB)
+                g, _ = nll_grad([(rows[q]["p_ids"], SK[q]["full"], SK[q]["masks"][tau][0] * (1 - SK[q]["masks"][tau][1])) for q in Qs])
+                res[f"sk_skel_noans_cos_{tg}"] = cos(g, gB)
+                # control: random steps with the same number of kept steps, + the answer node
+                items = []
+                for q in Qs:
+                    keep, ansm, anc = SK[q]["masks"][tau]; n = SK[q]["n"]; tks = SK[q]["tks"]
+                    pick = set(rng_m.choice(n, size=len(anc), replace=False).tolist()) if anc else set()
+                    m = ansm.clone(); o = 0
+                    for k in range(n):
+                        if k in pick:
+                            m[o:o + len(tks[k])] = 1
+                        o += len(tks[k])
+                    items.append((rows[q]["p_ids"], SK[q]["full"], m))
+                g, _ = nll_grad(items); res[f"sk_randsteps_cos_{tg}"] = cos(g, gB)
+                # intervened data: the skeleton TEXT alone (non-ancestor steps deleted), full SFT on it
+                items = []
+                for q in Qs:
+                    anc = set(SK[q]["masks"][tau][2]); tks = SK[q]["tks"]; n = SK[q]["n"]
+                    comp = [t for k in range(n + 1) if (k in anc or k == n) for t in tks[k]] + [eos_tok]
+                    items.append((rows[q]["p_ids"], comp, torch.ones(len(comp), device="cuda")))
+                g, _ = nll_grad(items); res[f"sk_skeltext_cos_{tg}"] = cos(g, gB)
+            ex = Qs[0]
+            res["example_skel"] = {"steps": [t[:120] for t in steps_of(rows[ex]["ref_txt"])],
+                                 "ancestors": {f"{t:g}": SK[ex]["masks"][t][2] for t in taus}}
+            res["time"] = round(time.time() - t0, 1)
+            results.append(res); print("BATCH " + json.dumps(res), flush=True)
+            continue
         if a.format_sweep:
             af0 = [s for s in A if kind_g(s) == "allfail"]
             mw0 = [s for s in A if kind_g(s) == "mixed" and s["r"] == 0]
@@ -589,8 +782,8 @@ def main():
         results.append(res)
         print("BATCH " + json.dumps(res), flush=True)
 
-    keys = [k for k in results[0] if k.startswith(("anchor", "sd_", "grpo_", "gap_", "step_", "tokw_", "fmt_", "ctx_", "wt", "sft_", "ys_", "cf_", "inv_", "pl_"))]
-    summ = {k: [r[k] for r in results if r.get(k) is not None] for k in keys}
+    keys = [k for k in results[0] if k.startswith(("anchor", "sd_", "grpo_", "gap_", "step_", "tokw_", "fmt_", "ctx_", "wt", "sft_", "ys_", "cf_", "inv_", "pl_", "dr_", "sk_"))]
+    summ = {k: [r[k] for r in results if isinstance(r.get(k), (int, float))] for k in keys}
     summ = {k: {"mean": float(np.mean(v)), "min": float(np.min(v)), "max": float(np.max(v))} for k, v in summ.items() if v}
     (out / "results.json").write_text(json.dumps({"batches": results, "summary": summ}, indent=2))
     (out / "teacher_top_tokens.txt").write_text("\n".join(token_rows))

@@ -1,0 +1,99 @@
+{
+  "questions": 384,
+  "hard": 224,
+  "allfail": 122,
+  "ystar_leak_dropped": 2,
+  "arms": {
+    "plain": {
+      "n": 224,
+      "acc": 0.14285714285714285,
+      "rescue_allfail": 0.2540983606557377,
+      "delta_vs_plain": 0.0,
+      "delta_ci90": [
+        0.0,
+        0.0
+      ],
+      "len": 662.4056919642857,
+      "trunc": 0.023995535714285716
+    },
+    "restate": {
+      "n": 224,
+      "acc": 0.13337053571428573,
+      "rescue_allfail": 0.3114754098360656,
+      "delta_vs_plain": -0.009486607142857142,
+      "delta_ci90": [
+        -0.026785714285714284,
+        0.007254464285714286
+      ],
+      "len": 678.15625,
+      "trunc": 0.02734375
+    },
+    "recall": {
+      "n": 224,
+      "acc": 0.12220982142857142,
+      "rescue_allfail": 0.2459016393442623,
+      "delta_vs_plain": -0.020647321428571428,
+      "delta_ci90": [
+        -0.03850446428571429,
+        -0.0033482142857142855
+      ],
+      "len": 756.5619419642857,
+      "trunc": 0.027901785714285716
+    },
+    "special": {
+      "n": 224,
+      "acc": 0.12332589285714286,
+      "rescue_allfail": 0.2459016393442623,
+      "delta_vs_plain": -0.01953125,
+      "delta_ci90": [
+        -0.03794642857142857,
+        -0.002232142857142857
+      ],
+      "len": 709.31640625,
+      "trunc": 0.030691964285714284
+    },
+    "backward": {
+      "n": 224,
+      "acc": 0.13225446428571427,
+      "rescue_allfail": 0.30327868852459017,
+      "delta_vs_plain": -0.010602678571428572,
+      "delta_ci90": [
+        -0.026227678571428572,
+        0.006138392857142857
+      ],
+      "len": 659.6841517857143,
+      "trunc": 0.025111607142857144
+    },
+    "ystar_first": {
+      "n": 222,
+      "acc": 0.2072072072072072,
+      "rescue_allfail": 0.4098360655737705,
+      "delta_vs_plain": 0.06531531531531531,
+      "delta_ci90": [
+        0.04504504504504504,
+        0.08502252252252253
+      ],
+      "len": 693.2302927927927,
+      "trunc": 0.024774774774774775
+    }
+  },
+  "policy_values": {
+    "plain": 0.13626126126126126,
+    "best_single(ystar_first)": 0.21283783783783783,
+    "per_subject": 0.21283783783783783,
+    "per_question": 0.16103603603603603,
+    "oracle_any_arm_rescue": 0.7657657657657657,
+    "plain_arm_rescue": 0.4954954954954955
+  },
+  "subject_best_arm": {
+    "Algebra": "ystar_first",
+    "Prealgebra": "ystar_first",
+    "Intermediate Algebra": "ystar_first",
+    "Number Theory": "ystar_first",
+    "Counting & Probability": "ystar_first",
+    "Precalculus": "ystar_first",
+    "Geometry": "ystar_first"
+  },
+  "n_common": 222,
+  "time": 941.7
+}

@@ -63,7 +63,7 @@ Ghi ‖Δθ‖ nếu cần chỉnh, ghi vào nhật ký dưới đây.
 - **2026-11-21 14:05 UTC — metaopsd_v3_s1 TẠM DỪNG ở rollout 33/66 (người dùng chốt), sụp chậm.** Phần thưởng train 0,38 (r25) →
   0,25 (r32), dưới cả lúc đầu (0,27); GRPO cùng rollout ~0,53. cos(g_Q,g_S) −0,35 → −0,50, ngày càng ngược. Cùng cơ chế với
   metaopsd_s1 (keep_inner=1), chỉ chậm hơn → MAML chuẩn không cứu được hướng thầy-có-y* ngược reward. Dự đoán v3 "không sụp" SAI.
-  Checkpoint lưu ở `<cluster-storage>/projects/capstone/ckpt_r01/metaopsd_v3_s1/`: `ckpt/` = trạng thái đủ để chạy tiếp (sau rollout
+  Checkpoint lưu ở `/media02/lhbac22/projects/capstone/ckpt_r01/metaopsd_v3_s1/`: `ckpt/` = trạng thái đủ để chạy tiếp (sau rollout
   30: adapter + optim.pt + levels.npy), `adapter_latest/` = trọng số sau r32 (đánh giá được, không chạy tiếp được). Chạy tiếp: chép
   `ckpt/` về `runs/r01/metaopsd_v3_s1/ckpt/` rồi chạy lại cùng lệnh beat.loop (`--opt keep_inner=0`), loop tự nối từ ckpt.
   Log: `experiments/rounds/R01/metaopsd_v3_s1/`. Card 1 chuyển sang opsd_s1 (14:07 UTC).

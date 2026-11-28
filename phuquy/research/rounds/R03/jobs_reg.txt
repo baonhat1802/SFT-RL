@@ -1,0 +1,2 @@
+# R03-1 bản có chặn (DPO-style, tham chiếu = model gốc): lam=0.2 (khớp hướng/độ lớn đã kiểm trước tại h=0), beta=10 nat⁻¹/token
+cfpair_reg_s1      cfpair      --opt form=dpo --opt lam=0.2 --opt beta=10

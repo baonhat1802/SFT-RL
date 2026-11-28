@@ -1,0 +1,450 @@
+{
+  "batches": [
+    {
+      "batch": 0,
+      "reward": 0.32421875,
+      "allfail": 0.296875,
+      "n": {
+        "rl_A": 343,
+        "rl_B": 332
+      },
+      "anchor_grpoA_vs_grpoB": 0.07091331481933594,
+      "sk_q": 60,
+      "sk_n_steps": 5.166666666666667,
+      "sk_direct_ans_drop": 0.20817985362715163,
+      "sk_all_cos": -0.157931387424469,
+      "sk_answer_only_cos": -0.010376074351370335,
+      "sk_frac_0.1": 0.7415887594843904,
+      "sk_edges_0.1": 0.3610321976498447,
+      "sk_prose_skel_0.1": 0.15944781806319952,
+      "sk_prose_rest_0.1": 0.14285714285714285,
+      "sk_skel_cos_0.1": -0.15742197632789612,
+      "sk_rest_cos_0.1": -0.13536226749420166,
+      "sk_skel_noans_cos_0.1": -0.1783713698387146,
+      "sk_randsteps_cos_0.1": -0.177232027053833,
+      "sk_skeltext_cos_0.1": -0.1879231184720993,
+      "sk_frac_0.5": 0.2873628148498634,
+      "sk_edges_0.5": 0.15342022900846428,
+      "sk_prose_skel_0.5": 0.03108465565102441,
+      "sk_prose_rest_0.5": 0.3418596333691052,
+      "sk_skel_cos_0.5": -0.09848718345165253,
+      "sk_rest_cos_0.5": -0.1595526784658432,
+      "sk_skel_noans_cos_0.5": -0.16751234233379364,
+      "sk_randsteps_cos_0.5": -0.12683717906475067,
+      "sk_skeltext_cos_0.5": -0.1931738257408142,
+      "example_skel": {
+        "steps": [
+          "Because \\(b^2>0\\), the equation implies that \\(a\\) and \\(\\log_{10}b\\) have the same sign. ",
+          "If \\(a>0\\), then \\(b>1\\), and\n",
+          "\\[\na=\\frac{\\log_{10}b}{b^2}.\n\\]\n",
+          "For \\(b>1\\), \\(0<\\ln b<b-1\\) and \\(\\ln 10>1\\), so\n",
+          "\\[\n0<a=\\frac{\\ln b}{(\\ln 10)b^2}<\\frac{b-1}{b^2}<1,\n\\]\n",
+          "contradicting that \\(a\\) is a positive integer. ",
+          "Also \\(b=1\\) would force \\(a=0\\), which is excluded. ",
+          "Therefore \\(a<0\\) and \\(0<b<1\\). ",
+          "The five values are ordered\n",
+          "\\[\na<0<b<1<\\frac1b,\n\\]\n",
+          "so their median is \\(\\boxed{b}.\\)"
+        ],
+        "ancestors": {
+          "0.1": [
+            8,
+            9
+          ],
+          "0.5": [
+            9
+          ]
+        }
+      },
+      "time": 300.0
+    },
+    {
+      "batch": 1,
+      "reward": 0.244140625,
+      "allfail": 0.34375,
+      "n": {
+        "rl_A": 309,
+        "rl_B": 342
+      },
+      "anchor_grpoA_vs_grpoB": 0.11871590465307236,
+      "sk_q": 64,
+      "sk_n_steps": 4.90625,
+      "sk_direct_ans_drop": 0.2450847447706731,
+      "sk_all_cos": -0.037546753883361816,
+      "sk_answer_only_cos": 0.059598203748464584,
+      "sk_frac_0.1": 0.7663242436246946,
+      "sk_edges_0.1": 0.411786911005661,
+      "sk_prose_skel_0.1": 0.12320675633170387,
+      "sk_prose_rest_0.1": 0.3728190999139439,
+      "sk_skel_cos_0.1": -0.03176043555140495,
+      "sk_rest_cos_0.1": -0.044882941991090775,
+      "sk_skel_noans_cos_0.1": -0.059486228972673416,
+      "sk_randsteps_cos_0.1": -0.03392060846090317,
+      "sk_skeltext_cos_0.1": -0.054169364273548126,
+      "sk_frac_0.5": 0.336199322307948,
+      "sk_edges_0.5": 0.18408908799533796,
+      "sk_prose_skel_0.5": 0.0068181820891120215,
+      "sk_prose_rest_0.5": 0.5995982587337494,
+      "sk_skel_cos_0.5": 0.01648635044693947,
+      "sk_rest_cos_0.5": -0.056096628308296204,
+      "sk_skel_noans_cos_0.5": -0.04313524812459946,
+      "sk_randsteps_cos_0.5": -0.00892732199281454,
+      "sk_skeltext_cos_0.5": -0.06854130327701569,
+      "example_skel": {
+        "steps": [
+          "Write the roots as \\(-r_1,-r_2,-r_3,-r_4\\), where each \\(r_i\\) is a positive integer. ",
+          "Evaluating the polynomial at \\(1\\) gives\n",
+          "\\[\n\\prod_{i=1}^4(r_i+1)=f(1)=1+a+b+c+d=2010.\n\\]\n",
+          "Since \\(2010=2\\cdot3\\cdot5\\cdot67\\) has exactly four prime factors counted with multiplicity, and each \\(r_i+1\\ge2\\), th",
+          "Thus the \\(r_i\\) are \\(1,2,4,66\\). ",
+          "The constant term is the product of the four roots, so\n",
+          "\\[\nd=(1)(2)(4)(66)=\\boxed{528}.\n\\]"
+        ],
+        "ancestors": {
+          "0.1": [
+            0,
+            2,
+            3,
+            4,
+            5
+          ],
+          "0.5": [
+            5
+          ]
+        }
+      },
+      "time": 294.8
+    },
+    {
+      "batch": 2,
+      "reward": 0.30859375,
+      "allfail": 0.3203125,
+      "n": {
+        "rl_A": 370,
+        "rl_B": 298
+      },
+      "anchor_grpoA_vs_grpoB": 0.12648873031139374,
+      "sk_q": 57,
+      "sk_n_steps": 4.947368421052632,
+      "sk_direct_ans_drop": 0.2513403212278348,
+      "sk_all_cos": 0.011918863281607628,
+      "sk_answer_only_cos": 0.025503482669591904,
+      "sk_frac_0.1": 0.7370404582143876,
+      "sk_edges_0.1": 0.39955001139211666,
+      "sk_prose_skel_0.1": 0.07017243839800358,
+      "sk_prose_rest_0.1": 0.4765625,
+      "sk_skel_cos_0.1": 0.012846308760344982,
+      "sk_rest_cos_0.1": 0.008603021502494812,
+      "sk_skel_noans_cos_0.1": 0.005599567200988531,
+      "sk_randsteps_cos_0.1": 0.0169745534658432,
+      "sk_skeltext_cos_0.1": 0.02395336702466011,
+      "sk_frac_0.5": 0.2945091711814728,
+      "sk_edges_0.5": 0.164009139009139,
+      "sk_prose_skel_0.5": 0.018939394503831863,
+      "sk_prose_rest_0.5": 0.5055633066222072,
+      "sk_skel_cos_0.5": 0.025278788059949875,
+      "sk_rest_cos_0.5": 0.00450394582003355,
+      "sk_skel_noans_cos_0.5": 0.015352463349699974,
+      "sk_randsteps_cos_0.5": 0.011026025749742985,
+      "sk_skeltext_cos_0.5": 0.06468362361192703,
+      "example_skel": {
+        "steps": [
+          "There are \\(7!=5040\\) total seatings. ",
+          "If Wilma and Paul sit together, treat them as one block; ",
+          "the block and the other five people can be arranged in \\(6!\\) ways, and Wilma and Paul can switch places in \\(2\\) ways. ",
+          "Thus \\(2\\cdot6!=1440\\) seatings have them together. ",
+          "The number with them apart is \\(5040-1440=\\boxed{3600}\\)."
+        ],
+        "ancestors": {
+          "0.1": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "0.5": [
+            3
+          ]
+        }
+      },
+      "time": 302.9
+    },
+    {
+      "batch": 3,
+      "reward": 0.298828125,
+      "allfail": 0.328125,
+      "n": {
+        "rl_A": 379,
+        "rl_B": 289
+      },
+      "anchor_grpoA_vs_grpoB": 0.048424772918224335,
+      "sk_q": 61,
+      "sk_n_steps": 4.770491803278689,
+      "sk_direct_ans_drop": 0.24656187151110756,
+      "sk_all_cos": -0.08294282853603363,
+      "sk_answer_only_cos": 0.05363011360168457,
+      "sk_frac_0.1": 0.73434573314229,
+      "sk_edges_0.1": 0.37485583633124614,
+      "sk_prose_skel_0.1": 0.08787866705097258,
+      "sk_prose_rest_0.1": 0.5,
+      "sk_skel_cos_0.1": -0.07511111348867416,
+      "sk_rest_cos_0.1": -0.0870053842663765,
+      "sk_skel_noans_cos_0.1": -0.10475717484951019,
+      "sk_randsteps_cos_0.1": -0.08400657027959824,
+      "sk_skeltext_cos_0.1": -0.1021282896399498,
+      "sk_frac_0.5": 0.32843064155704416,
+      "sk_edges_0.5": 0.1727495637331703,
+      "sk_prose_skel_0.5": 0.04908394068479538,
+      "sk_prose_rest_0.5": 0.4831040115095675,
+      "sk_skel_cos_0.5": 0.003961422014981508,
+      "sk_rest_cos_0.5": -0.10949403047561646,
+      "sk_skel_noans_cos_0.5": -0.052983131259679794,
+      "sk_randsteps_cos_0.5": -0.027739832177758217,
+      "sk_skeltext_cos_0.5": -0.09687167406082153,
+      "example_skel": {
+        "steps": [
+          "Applying the Euclidean algorithm,\n",
+          "\\[\n252=2(96)+60,\\quad 96=1(60)+36,\\quad 60=1(36)+24,\n\\]\n",
+          "\\[\n36=1(24)+12,\\quad 24=2(12).\n\\]\n",
+          "The last nonzero remainder is \\(12\\), so the greatest common factor is \\(\\boxed{12}\\)."
+        ],
+        "ancestors": {
+          "0.1": [
+            0,
+            1,
+            2
+          ],
+          "0.5": [
+            0,
+            1,
+            2
+          ]
+        }
+      },
+      "time": 288.9
+    },
+    {
+      "batch": 4,
+      "reward": 0.3115234375,
+      "allfail": 0.3515625,
+      "n": {
+        "rl_A": 350,
+        "rl_B": 294
+      },
+      "anchor_grpoA_vs_grpoB": 0.08851102739572525,
+      "sk_q": 61,
+      "sk_n_steps": 4.836065573770492,
+      "sk_direct_ans_drop": 0.2730271880143334,
+      "sk_all_cos": -0.13234655559062958,
+      "sk_answer_only_cos": 0.06292307376861572,
+      "sk_frac_0.1": 0.8479468162919654,
+      "sk_edges_0.1": 0.4384054920813282,
+      "sk_prose_skel_0.1": 0.06750399819933452,
+      "sk_prose_rest_0.1": 0.4807692307692308,
+      "sk_skel_cos_0.1": -0.11460933834314346,
+      "sk_rest_cos_0.1": -0.1665622591972351,
+      "sk_skel_noans_cos_0.1": -0.1510148048400879,
+      "sk_randsteps_cos_0.1": -0.12765707075595856,
+      "sk_skeltext_cos_0.1": -0.14055800437927246,
+      "sk_frac_0.5": 0.3455368597976497,
+      "sk_edges_0.5": 0.18418900219260567,
+      "sk_prose_skel_0.5": 0.016317016803301297,
+      "sk_prose_rest_0.5": 0.5397206344283544,
+      "sk_skel_cos_0.5": -0.03487513214349747,
+      "sk_rest_cos_0.5": -0.1688232570886612,
+      "sk_skel_noans_cos_0.5": -0.11524791270494461,
+      "sk_randsteps_cos_0.5": -0.07017993927001953,
+      "sk_skeltext_cos_0.5": -0.14526806771755219,
+      "example_skel": {
+        "steps": [
+          "Complete the square:\n",
+          "\\[\n3x^2-6x-2=3(x^2-2x)-2=3\\bigl((x-1)^2-1\\bigr)-2=3(x-1)^2-5.\n\\]\n",
+          "Thus \\(a=3\\), \\(h=1\\), and \\(k=-5\\), so \\(a+h+k=3+1-5=\\boxed{-1}\\)."
+        ],
+        "ancestors": {
+          "0.1": [
+            1
+          ],
+          "0.5": [
+            1
+          ]
+        }
+      },
+      "time": 290.0
+    },
+    {
+      "batch": 5,
+      "reward": 0.32421875,
+      "allfail": 0.2421875,
+      "n": {
+        "rl_A": 393,
+        "rl_B": 360
+      },
+      "anchor_grpoA_vs_grpoB": 0.05751403421163559,
+      "sk_q": 58,
+      "sk_n_steps": 4.827586206896552,
+      "sk_direct_ans_drop": 0.2368188128872497,
+      "sk_all_cos": -0.06542962789535522,
+      "sk_answer_only_cos": -0.03366043418645859,
+      "sk_frac_0.1": 0.7750905211372622,
+      "sk_edges_0.1": 0.38524097043366823,
+      "sk_prose_skel_0.1": 0.11942640798432487,
+      "sk_prose_rest_0.1": 0.5714285714285714,
+      "sk_skel_cos_0.1": -0.06580543518066406,
+      "sk_rest_cos_0.1": -0.054448775947093964,
+      "sk_skel_noans_cos_0.1": -0.06253750622272491,
+      "sk_randsteps_cos_0.1": -0.07429108023643494,
+      "sk_skeltext_cos_0.1": -0.06972263008356094,
+      "sk_frac_0.5": 0.34278269531205297,
+      "sk_edges_0.5": 0.1747965607752626,
+      "sk_prose_skel_0.5": 0.025210084659712657,
+      "sk_prose_rest_0.5": 0.7759353731359754,
+      "sk_skel_cos_0.5": -0.03877048194408417,
+      "sk_rest_cos_0.5": -0.06742696464061737,
+      "sk_skel_noans_cos_0.5": -0.028461184352636337,
+      "sk_randsteps_cos_0.5": -0.07381296902894974,
+      "sk_skeltext_cos_0.5": -0.03932158276438713,
+      "example_skel": {
+        "steps": [
+          "Let \\(a=5+x\\) and \\(b=20-x\\). ",
+          "Then \\(a+b=25\\), and the given equation implies\n",
+          "\\[\n49=(\\sqrt a+\\sqrt b)^2=a+b+2\\sqrt{ab}=25+2\\sqrt{ab}.\n\\]\n",
+          "Thus \\(\\sqrt{ab}=12\\), so the requested product is \\(ab=\\boxed{144}\\)."
+        ],
+        "ancestors": {
+          "0.1": [
+            0,
+            1,
+            2
+          ],
+          "0.5": [
+            2
+          ]
+        }
+      },
+      "time": 282.6
+    }
+  ],
+  "summary": {
+    "anchor_grpoA_vs_grpoB": {
+      "mean": 0.0850946307182312,
+      "min": 0.048424772918224335,
+      "max": 0.12648873031139374
+    },
+    "sk_q": {
+      "mean": 60.166666666666664,
+      "min": 57.0,
+      "max": 64.0
+    },
+    "sk_n_steps": {
+      "mean": 4.9090714452775055,
+      "min": 4.770491803278689,
+      "max": 5.166666666666667
+    },
+    "sk_direct_ans_drop": {
+      "mean": 0.2435021320063917,
+      "min": 0.20817985362715163,
+      "max": 0.2730271880143334
+    },
+    "sk_all_cos": {
+      "mean": -0.07737971500804026,
+      "min": -0.157931387424469,
+      "max": 0.011918863281607628
+    },
+    "sk_answer_only_cos": {
+      "mean": 0.026269727541754644,
+      "min": -0.03366043418645859,
+      "max": 0.06292307376861572
+    },
+    "sk_frac_0.1": {
+      "mean": 0.7670560886491651,
+      "min": 0.73434573314229,
+      "max": 0.8479468162919654
+    },
+    "sk_edges_0.1": {
+      "mean": 0.39514523648231076,
+      "min": 0.3610321976498447,
+      "max": 0.4384054920813282
+    },
+    "sk_prose_skel_0.1": {
+      "mean": 0.10460601433792316,
+      "min": 0.06750399819933452,
+      "max": 0.15944781806319952
+    },
+    "sk_prose_rest_0.1": {
+      "mean": 0.4240727574948148,
+      "min": 0.14285714285714285,
+      "max": 0.5714285714285714
+    },
+    "sk_skel_cos_0.1": {
+      "mean": -0.07197699835523963,
+      "min": -0.15742197632789612,
+      "max": 0.012846308760344982
+    },
+    "sk_rest_cos_0.1": {
+      "mean": -0.07994310123225053,
+      "min": -0.1665622591972351,
+      "max": 0.008603021502494812
+    },
+    "sk_skel_noans_cos_0.1": {
+      "mean": -0.09176125292045374,
+      "min": -0.1783713698387146,
+      "max": 0.005599567200988531
+    },
+    "sk_randsteps_cos_0.1": {
+      "mean": -0.08002213388681412,
+      "min": -0.177232027053833,
+      "max": 0.0169745534658432
+    },
+    "sk_skeltext_cos_0.1": {
+      "mean": -0.08842467330396175,
+      "min": -0.1879231184720993,
+      "max": 0.02395336702466011
+    },
+    "sk_frac_0.5": {
+      "mean": 0.3224702508343385,
+      "min": 0.2873628148498634,
+      "max": 0.3455368597976497
+    },
+    "sk_edges_0.5": {
+      "mean": 0.17220893045233,
+      "min": 0.15342022900846428,
+      "max": 0.18418900219260567
+    },
+    "sk_prose_skel_0.5": {
+      "mean": 0.02457554573196294,
+      "min": 0.0068181820891120215,
+      "max": 0.04908394068479538
+    },
+    "sk_prose_rest_0.5": {
+      "mean": 0.5409635362998265,
+      "min": 0.3418596333691052,
+      "max": 0.7759353731359754
+    },
+    "sk_skel_cos_0.5": {
+      "mean": -0.02106770616956055,
+      "min": -0.09848718345165253,
+      "max": 0.025278788059949875
+    },
+    "sk_rest_cos_0.5": {
+      "mean": -0.09281493552650015,
+      "min": -0.1688232570886612,
+      "max": 0.00450394582003355
+    },
+    "sk_skel_noans_cos_0.5": {
+      "mean": -0.06533122590432565,
+      "min": -0.16751234233379364,
+      "max": 0.015352463349699974
+    },
+    "sk_randsteps_cos_0.5": {
+      "mean": -0.04941186929742495,
+      "min": -0.12683717906475067,
+      "max": 0.011026025749742985
+    },
+    "sk_skeltext_cos_0.5": {
+      "mean": -0.07974880499144395,
+      "min": -0.1931738257408142,
+      "max": 0.06468362361192703
+    }
+  }
+}

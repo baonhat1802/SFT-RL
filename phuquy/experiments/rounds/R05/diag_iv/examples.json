@@ -1,0 +1,74 @@
+[
+ {
+  "fact": "As \\(D\\) varies, these midpoints lie on a circle centered at \\(A/2\\) with radius \\(5/2\\).",
+  "prefix_tail": "Let $x=BA=BD$. By the Power of a Point Theorem, we have $(x+6)^2 = (5-BC)(BC-6)$. Solving this we can get $x=5$.\n\n",
+  "seg_z0": "We now consider the triangle $OAD$. If $O$ is outside triangle $ADO$, then triangle $ADO$ is obtuse, making it non-convex, which is not the case.\n\nTherefore $O$ is on the inside of the triangle and it has an obtuse angle, so $P_4$ does not satisfy the condition.\n[::-The product above is$357$::]}\n[::-Note that$=:=$is 90 degrees:::!",
+  "seg_z1_withF": null
+ },
+ {
+  "fact": "Since \\(5005=100\\cdot 50+5\\), the greatest common divisor of \\(50\\) and \\(5005\\) is \\(5\\).",
+  "prefix_tail": ", calculate the prime factorization to identify both numbers:\n    \\[ 2 \\times 5^2 \\times 7 \\times 11 \\times 13 = 2 \\times 25 \\times 7 \\times 11 \\times 13 \\]\n\n",
+  "seg_z0": "    Now, multiply the numbers:\n    \\[ 2 \\times 25 = 50 \\]\n    \\[ 50 \\times 7 = 350 \\]\n    \\[ 350 \\times 11 = 3850 \\]\n    \\[ 3850 \\times 13 = 50050 \\]\n\n    So,\n   \\[ LCM(50, 5",
+  "seg_z1_withF": null
+ },
+ {
+  "fact": "Then \\(\\tan\\theta=1/5\\).",
+  "prefix_tail": "sin^2 \\angle CBA = 1 - \\cos^2 \\angle CBA\n\\]\n\nLet's calculate \\( AD \\):\n\n\\[\n\\cos \\angle CBA = \\frac{\\sqrt{24} - 1}{2\\sqrt{6} - 1}\n",
+  "seg_z0": "\\]\n\nAfter simplifying, we find AD as follows: \n\n\\boxed{\\frac{1}{2}}",
+  "seg_z1_withF": null
+ },
+ {
+  "fact": "Indeed, \\(1/2^n\\) has exactly \\(n\\) digits after the decimal point.",
+  "prefix_tail": "10^{n + 1}$.\n\n2. **Determine the value of $f(n)$:**\n   - According to the above relationship, $f(n) = 10^{n + 1}$.\n\n3. **Find $f(2010)$:**\n",
+  "seg_z0": "   - Substitute $n = 2010$ into the formula: $f(2010) = 10^{2010 + 1} = 10^{2011}$.\n\n4. **Count the number of positive divisors of $f(2010)$:**\n   - The number $10^{2011}$ can be expressed as $2^{2011} \\cdot",
+  "seg_z1_withF": null
+ },
+ {
+  "fact": "Substituting \\(a=t/(t-1)=(1-6d)/(1-12d)\\) yields \\[\n(1-6d)^2=-d(1-12d),\n\\] \\[\n(8d-1)(3d-1)=0.\n\\]",
+  "prefix_tail": " the fact that these four points lie on the line to find the values of $a,b,c$ related to each pair of points. Ġes, we have three such pairs of points, and ġive system of equations can be formed considering the line-slope and point-slope forms:\n\n",
+  "seg_z0": "1. $\\frac{0-0}{1-b} = \\frac{1-0}{1-a} \\Rightarrow \\frac{0}{1-b} = \\frac{1}{1-a} \\Rightarrow \\frac{0}{1-b} = 1 \\Rightarrow a/1 = 1 \\Rightarrow a = 1.$\n\n2. $\\frac{1-0}{b-1} = \\frac{c-0}{0-b} \\",
+  "seg_z1_withF": null
+ },
+ {
+  "fact": "Dividing \\(a^2b=135\\) by \\(ab^2=\\frac{27}{5}\\) gives \\[\n\\frac{a}{b}=\\frac{135}{27/5}=25,\n\\]",
+  "prefix_tail": " a different approach instead of these algebraic manipulations directly.\n\nWe know that for this pair of variables $a$ and $b$, there exist some specific product relationships involving powers. So let’s assume we use specific values here and use consistent calculations without any algebraic manipulations.\n\nLet's assume:\n",
+  "seg_z0": "$$a = 3\\sqrt[3]{3}$$\n\nThen, let's calculate based on:\n\n$$ ab^2 = 3\\sqrt[3]{3} b^2 = \\frac{27}{5} $$\n\nand\n\n$$ a^2b = (3\\sqrt[3]{3})^2 b = 135 $$\n\nNow, let's use another assumption $b = \\sqrt[3]{1155",
+  "seg_z1_withF": "- From $aab^2 = \\frac{27}{5}$, we have $aab^2 = \\frac{27}{5}$\n- And from $a^2b = 135$, we can directly say both equations must be interrelated with each other.\n\nRewriting:\n$$ a = 25b $$\n\nSubstitute this relation into $135 = a^2b$:\n$$ 135 = ("
+ },
+ {
+  "fact": "The part of this region where \\(B<1/2\\) has area \\[\n\\int_0^{1/2}(1-b)\\,db=\\frac38.\n\\]",
+  "prefix_tail": " equal to 30 minutes. This further restricts the region to a smaller right triangle within the original triangle. The vertices of this new triangle are at (0, 0), (30, 0), and (0, 30).\n\nThe area of this new triangle is:\n",
+  "seg_z0": "\\[ \\text{Area}_{\\text{small}} = \\frac{1}{2} \\times 30 \\times 30 = 450 \\]\n\nThe probability that Bob arrived before 1:30, given that Alice arrives after, is the ratio of the area of the small triangle to the area of the original triangle:\n\\[ \\text{Probability} = \\frac{\\text{Area}_{\\text{small}}}{\\text{Area",
+  "seg_z1_withF": null
+ },
+ {
+  "fact": "The vector from \\(A\\) to \\(B\\) is \\((38,10,22)\\), so \\[\nAB=\\sqrt{38^2+10^2+22^2}=2\\sqrt{507}.\n\\]",
+  "prefix_tail": " equilateral triangle ABC: AB = $6\\sqrt{11}$ and AP = $20\\sqrt{2}$.\n7. To find the total length of the curve traced by the set of points P, we need to find the locus of all points P that satisfy the condition.\n",
+  "seg_z0": "8. Since triangle ABP is equilateral, the locus of the points P is a circle with diameter AB.\n9. The radius of this circle is half of the length of AB, which is:\n    $$\\frac{AB}{2} = \\frac{6\\sqrt{11}}{2} = 3\\sqrt{11}$$\n10. The circumference of the circle (length of the curve) is given by the formula:\n   ",
+  "seg_z1_withF": null
+ },
+ {
+  "fact": "Moving from \\(x=4\\) to \\(x=8\\) is a change of \\(4\\), which corresponds to \\(4/5\\) of the direction vector.",
+  "prefix_tail": " \\) into equation (2):\n\nSubstitute \\( s = \\frac{-4 - 5t}{15} \\) into equation (2):\n\\[\n-1 + 2t = k - 6 \\left(\\frac{-4 - 5t}{15}\\right)\n",
+  "seg_z0": "\\]\n\\[\n-1 + 2t = k + \\frac{6 \\times 4 + 30t}{15}\n\\]\n\\[\n-1 + 2t = k + \\frac{24 + 30t}{15}\n\\]\n\nThis simplifies to:\n\\[\n-1 + 2t = k + \\frac{24}{15} + 2t\n\\]\n\\[\n-1 +",
+  "seg_z1_withF": null
+ },
+ {
+  "fact": "For \\(z=1/14\\), the finite product satisfies \\[\n\\prod_{k=0}^{n}(1+z^{2^k})\n=\\frac{1-z^{2^{n+1}}}{1-z},\n\\]",
+  "prefix_tail": "2 \\cdot 2^{k+1}}}.\n\\]\n\nNotice that:\n\\[\na_{k+1} = 1 + \\frac{1}{14^{2^k}} \\left(1 + \\frac{1}{14^{2^k}}\\right).\n",
+  "seg_z0": "\\]\n\nThus, we can rewrite the product as:\n\\[\n\\prod_{k=0}^\\infty a_k = \\prod_{k=0}^\\infty \\left(1 + \\frac{1}{14^{2^k}}\\right).\n\\]\n\nThis product telescopes, and every term cancels out except the very first. Therefore:\n\\[\nP = \\frac{1}{1 - \\frac{1}{14^{2",
+  "seg_z1_withF": null
+ },
+ {
+  "fact": "There are \\(20\\cdot20=400\\) equally likely pairs of faces.",
+  "prefix_tail": " 2. Calculating Probabilities\nNext, calculate the probability for each valid combination:\n- Probability of rolling 15 on Die 1 and 9 on Die 2: \n  - Die 1 has 14 outcomes (from 1-19 except 15).\n",
+  "seg_z0": "  - Die 2 has 11 outcomes (from 1-8 or 10-20 except 9).\n  - Combined probability: \\(\\frac{14}{20} \\times \\frac{11}{20}\\).\n\n- Probability of rolling 18 on Die 1 and 6 on Die 2: \n  - Die 1 has 13 outcomes (from 1-19 except 18).\n",
+  "seg_z1_withF": "  - Die 2 has 9 outcomes (from 1-8).\n  - Probability: \\( \\frac{14}{20} \\times \\frac{9}{20} = \\frac{14 \\times 9}{400} = \\frac{126}{400} \\)\n\n- Probability of rolling 18 on Die 1 and 6 on Die 2:\n  - Die 1 has 1"
+ },
+ {
+  "fact": "For chords joining vertices \\(k\\) steps apart, the length is \\(24\\sin(k\\pi/12)\\).",
+  "prefix_tail": " to find needed line segments' length and sort them apart.\n\nLet us start with open-ended process:\n\n− First, considering only vertices forming the sides, those start and end at polar coordinates its vertex in the circle. The length of any single side will be determined through a triangle formed by the vertices.\n\n",
+  "seg_z0": "− Further, considering diagonals, any of width divided by periodicity that passes through multiple side-sides/vertexes.\n\nTo simplify, let us consider the vertices' distances forming these sides. The chief numerical challenge part for ease is considering the particular diagonals multiple approaches, paralleling existing length unit divisions. We can arrive at:\n\n1. Single segments: Each side length is square root representing half side-to-edge distances.\n2. Two sides distance: diagonal between two vertices of",
+  "seg_z1_withF": "−For each unique angle, we could use the formula for the chord length of a circle in terms of central gravitation (<https://en.wikipedia.org/wiki/Central_angle#Chords>). Unfortunately, it's quite a bit of such formula use. Let's consider the sum of all diameter two step apart, this angle translates to k in reference solution:\n\n\\[ \\text{Chord length (k step apart)} = 24\\sin( k\\pi \\div "
+ }
+]

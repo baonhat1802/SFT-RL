@@ -15,5 +15,12 @@ opsd_dense	R01	idea	reward dày thầy kiểu cộng, mọi câu
 r01_potential	R01	idea	shaping thế năng P(đáp án đúng)	
 r02_fork	R02	idea	câu cả-sai không gradient; y* chọn chỗ rẽ	dead-prescreen
 r02_transfer	R02	idea	giá trị thầy dao động; chọn theo chuyển giao	
-r03_cfpair	R03	idea	giọng văn y* che nội dung; cặp phản thực tế	pass-prescreen
+r03_cfpair	R03	idea	giọng văn y* che nội dung; cặp phản thực tế	dead-train (sụp rollout 25–30)
 r03_invar	R03	idea	gradient bất biến qua giọng (IRM/AND-mask)	dead-prescreen
+r05_skeleton	R05	dead-prescreen	khung nhân quả y* (khám phá đồ thị)	skel−đáp án −0,065 ≈ ngẫu nhiên −0,049
+r06_invtransport	R06	idea	chuyển tín hiệu thầy qua độ khó (bất biến)	
+r06_robust	R06	idea	thầy có biên nhiễu Γ (độ nhạy)	
+r06_proximal	R06	idea	gán công từng bước qua biến đại diện	
+r06_cfgrpo	R06	idea	GRPO phản thực: thầy là hành động thay thế, cùng nhiễu	
+r06_overlap	R06	idea	GRPO trọng số overlap (vi phạm positivity)	
+r06_iv	R06	idea	thầy là biến công cụ, hành động theo nội dung	

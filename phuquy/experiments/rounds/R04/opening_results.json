@@ -1,0 +1,115 @@
+{
+  "questions": 384,
+  "hard": 214,
+  "allfail": 120,
+  "arms": {
+    "plain": {
+      "acc": 0.1244158878504673,
+      "delta_vs_plain": 0.0,
+      "ci90": [
+        0.0,
+        0.0
+      ],
+      "rescue_allfail": 0.20833333333333334,
+      "len": 725.0806074766355,
+      "trunc": 0.036799065420560745
+    },
+    "luna_hint": {
+      "acc": 0.1647196261682243,
+      "delta_vs_plain": 0.04030373831775701,
+      "ci90": [
+        0.02044392523364486,
+        0.05957943925233645
+      ],
+      "rescue_allfail": 0.2916666666666667,
+      "len": 702.3884345794393,
+      "trunc": 0.02102803738317757
+    },
+    "luna_prefix": {
+      "acc": 0.0689252336448598,
+      "delta_vs_plain": -0.055490654205607476,
+      "ci90": [
+        -0.07476635514018691,
+        -0.036214953271028034
+      ],
+      "rescue_allfail": 0.14166666666666666,
+      "len": 373.79906542056074,
+      "trunc": 0.028621495327102803
+    },
+    "self_plain": {
+      "acc": 0.11623831775700935,
+      "delta_vs_plain": -0.008177570093457943,
+      "ci90": [
+        -0.02511682242990654,
+        0.009345794392523364
+      ],
+      "rescue_allfail": 0.23333333333333334,
+      "len": 652.2692757009346,
+      "trunc": 0.030373831775700934
+    },
+    "self_hinted": {
+      "acc": 0.14953271028037382,
+      "delta_vs_plain": 0.02511682242990654,
+      "ci90": [
+        0.006425233644859813,
+        0.042669392523364456
+      ],
+      "rescue_allfail": 0.31666666666666665,
+      "len": 687.5373831775701,
+      "trunc": 0.03329439252336448
+    },
+    "hinted_full": {
+      "acc": 0.6845794392523364,
+      "delta_vs_plain": 0.5601635514018691,
+      "ci90": [
+        0.5327102803738317,
+        0.5870327102803738
+      ],
+      "rescue_allfail": 0.9916666666666667,
+      "len": 767.6144859813085,
+      "trunc": 0.02102803738317757
+    }
+  },
+  "mediated_share_self_hinted": 0.04483837330552656,
+  "mediated_share_luna_prefix": -0.09906152241918668,
+  "opening_leak_rate_hinted": 0.010514018691588784,
+  "opening_leak_rate_plain": 0.011682242990654205,
+  "opening_len_chars": {
+    "hinted": 179.97429906542055,
+    "plain": 177.90829439252337,
+    "luna": 67.05607476635514
+  },
+  "examples": [
+    {
+      "luna": "Consider the quadrilateral \\(CMON\\).",
+      "hinted": "To find the measure of \\(\\angle MON\\) in triangle \\(ABC\\) where \\(M\\) and \\(N\\) are the midpoints of \\(BC\\) and \\(AC\\) respectively, and given \\(\\angle C = 47^\\circ\\), we can follow these steps:\n\n1. ",
+      "plain": "Let's solve this problem step by step:\n\n1. Since \\( M \\) and \\( N \\) are midpoints of \\( BC \\) and \\( AC \\), respectively, \\( OM \\) and \\( ON \\) are half the length of \\( BM \\) and \\( AN \\), respectively. "
+    },
+    {
+      "luna": "Let\n\\[\nf(x)=\\sqrt{x+27}+\\sqrt{13-x}+\\sqrt{x}.",
+      "hinted": "To find the maximum value of the function \\( f(x) = \\sqrt{x+27} + \\sqrt{13-x} + \\sqrt{x} \\) for \\( 0 \\le x \\le 13 \\), let's follow these steps:\n\n1. **Define the function**:\n",
+      "plain": "Let's analyze this step by step. We have the function:\n\n\\[f(x) = \\sqrt{x + 27} + \\sqrt{13 - x} + \\sqrt{x}\\]\n\nwith the domain \\(0 \\le x \\le 13\\). \n\n1. "
+    },
+    {
+      "luna": "The distance from the center of the square base to a vertex is half its diagonal, which is \\(8\\).",
+      "hinted": "To solve the problem, we need to determine the volume of the smaller pyramid that is cut off when the original right square pyramid is cut by a plane parallel to its base and 3 units above it.\n\n### Step 1: Determine the Height of the Original Pyramid\nGiven:\n",
+      "plain": "To solve the problem, we'll follow these steps:\n\n1. Calculate the height of the original right square pyramid.\n2. Determine the height of the smaller pyramid that is cut off.\n3. Calculate the volume of the original pyramid.\n4. Calculate the volume of the smaller pyramid.\n5. "
+    },
+    {
+      "luna": "The three given points form an equilateral triangle: each pair is at squared distance \\(18\\).",
+      "hinted": "We have three given points \\( A=(0,1,2) \\), \\( B=(4,2,1) \\), and \\( C=(3,1,5) \\). Using the distance formula, we will find the squared distance between each pair of points:\n\n",
+      "plain": "To find the coordinates of the fourth vertex of the regular tetrahedron, let's follow these steps:\n\nStep 1: Identify the given vertices. We have three vertices: "
+    },
+    {
+      "luna": "Let \\(x\\) be the positive value of the infinite expression.",
+      "hinted": " 😄 To find the value of the expression \\(x = \\log_2(27 + \\log_2(27 + \\log_2(\\ldots)))\\), we start by assuming that \\(x\\) exists as a positive number. This means we can write the expression recursively as follows:\n\n",
+      "plain": "oning to reason through this problem in a step-by-step manner is as follows:\n\nLet's denote the value of the expression as x:\nx = log₂(27 + x)\n\n"
+    },
+    {
+      "luna": "Let \\(D=(0,0)\\), \\(A=(L,0)\\), and write \\(B=(u,v)\\), \\(C=(-u,-v)\\), since \\(D\\) is the midpoint of \\(BC\\).",
+      "hinted": "Let's solve Triangle $ABC$ and find the unknowns step by step.\n\n### Step 1: Understanding Parameters\n- Given: $BC = 20$ units.\n- The incircle of the triangle evenly trisects the median $AD$.\n",
+      "plain": "To solve this problem, we'll start by assuming some known values and step through the logical progression of the problem. "
+    }
+  ],
+  "time": 989.9
+}

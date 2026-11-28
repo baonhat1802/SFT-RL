@@ -1,0 +1,483 @@
+{
+  "questions": 384,
+  "hard": 160,
+  "allfail": 94,
+  "plain": 0.1140625,
+  "full": 0.72734375,
+  "mean_steps": 4.65,
+  "by_position": {
+    "0": {
+      "n": 160,
+      "n_noleak": 151,
+      "leak_rate": 0.05625,
+      "delta_step": 0.04966887417218543,
+      "ci90_step": [
+        0.023178807947019868,
+        0.07698675496688742
+      ],
+      "delta_abs": 0.041390728476821195,
+      "delta_prefix": null
+    },
+    "1": {
+      "n": 158,
+      "n_noleak": 133,
+      "leak_rate": 0.15822784810126583,
+      "delta_step": 0.05827067669172932,
+      "ci90_step": [
+        0.03195488721804511,
+        0.08740601503759399
+      ],
+      "delta_abs": 0.012218045112781954,
+      "delta_prefix": 0.15031645569620253
+    },
+    "2": {
+      "n": 144,
+      "n_noleak": 111,
+      "leak_rate": 0.22916666666666666,
+      "delta_step": 0.03490990990990991,
+      "ci90_step": [
+        0.007882882882882882,
+        0.06418918918918919
+      ],
+      "delta_abs": 0.038288288288288286,
+      "delta_prefix": 0.21180555555555555
+    },
+    "3": {
+      "n": 118,
+      "n_noleak": 89,
+      "leak_rate": 0.2457627118644068,
+      "delta_step": 0.0449438202247191,
+      "ci90_step": [
+        0.011235955056179775,
+        0.07865168539325842
+      ],
+      "delta_abs": 0.0014044943820224719,
+      "delta_prefix": 0.2478813559322034
+    },
+    "4": {
+      "n": 96,
+      "n_noleak": 64,
+      "leak_rate": 0.3333333333333333,
+      "delta_step": 0.046875,
+      "ci90_step": [
+        0.009765625,
+        0.0859375
+      ],
+      "delta_abs": 0.021484375,
+      "delta_prefix": 0.3033854166666667
+    },
+    "5": {
+      "n": 68,
+      "n_noleak": 48,
+      "leak_rate": 0.29411764705882354,
+      "delta_step": 0.06770833333333333,
+      "ci90_step": [
+        0.0234375,
+        0.1171875
+      ],
+      "delta_abs": 0.03125,
+      "delta_prefix": 0.2959558823529412
+    }
+  },
+  "best_step_position_hist": {
+    "0": 96,
+    "1": 15,
+    "2": 15,
+    "3": 14,
+    "4": 9,
+    "5": 4
+  },
+  "honest_best_step": 0.22712418300653595,
+  "honest_plain": 0.10457516339869281,
+  "share_q_with_key_step_ge_0.25": 0.46405228758169936,
+  "share_q_with_key_step_ge_0.5": 0.17647058823529413,
+  "examples": [
+    {
+      "q": "Find the matrix $\\mathbf{M},$ with real entries, such that\n\\[\\mathbf{M}^3 = \\begin{pmatrix} 19 & 30 \\\\ -45 & -71 \\end{pmatrix}.\\]",
+      "ans": "\\begin{pmatrix} 1 & 2 \\\\ -3 & -5 \\end{pmatrix}",
+      "pos": 0,
+      "step": "\\[\n\\mathbf M=\\begin{pmatrix}1&2\\\\-3&-5\\end{pmatrix}.\n\\] \\[\n\\mathbf M^2=\\begin{pmatrix}-5&-8\\\\12&19\\end{pmatrix},\n\\qquad\n\\mathbf M^3=\\begin{pmatrix}19&30\\\\-45&-71\\end{pmatrix}.\n\\]",
+      "abs": "\\[\n\\mathbf M=\\begin{pmatrix}_&_\\\\-3&-_\\end{pmatrix}.\n\\] \\[\n\\mathbf M^_=\\begin{pmatrix}-_&-_\\\\_&19\\end{pmatrix},\n\\qquad\n\\mathbf M^3=\\begin{pmatrix}19&30\\\\-45&-71\\end{pmatrix}.\n\\]",
+      "eff": 0.75,
+      "eff_abs": 0.0,
+      "steps": [
+        "\\[\n\\mathbf M=\\begin{pmatrix}1&2\\\\-3&-5\\end{pmatrix}.\n\\] \\[\n\\mathbf M^2=\\begin{pmatrix}-5&-8\\\\12&19\\end{pmatrix},\n\\qquad\n\\mathbf M^3=\\begin{pmatrix}19&30\\\\-45&-71\\end{pmatrix}.\n\\]",
+        "Therefore a matrix satisfying the condition is",
+        "\\(\\boxed{\\begin{pmatrix}1&2\\\\-3&-5\\end{pmatrix}}\\)."
+      ]
+    },
+    {
+      "q": "Find the ordered pair $(m,n)$, where $m,n$ are positive integers satisfying the following equation:\n$$14mn = 55 - 7m - 2n$$",
+      "ans": "(1,3)",
+      "pos": 3,
+      "step": "Thus \\(7m+1=8\\), so \\(m=1\\), and then \\(2n+1=7\\), giving \\(n=3\\).",
+      "abs": "Thus \\(7m+_=_\\), so \\(m=_\\), and then \\(2n+_=7\\), giving \\(n=_\\).",
+      "eff": 0.75,
+      "eff_abs": 0.25,
+      "steps": [
+        "Rearrange the equation and factor: \\[\n14mn+7m+2n=55\n\\quad\\Longrightarrow\\quad\n(7m+1)(2n+1)=56.\n\\]",
+        "Since \\(m,n\\) are positive, \\(7m+1\\ge 8\\).",
+        "Among the divisors of \\(56\\) that are at least \\(8\\), only \\(8\\) is congruent to \\(1\\pmod 7\\).",
+        "Thus \\(7m+1=8\\), so \\(m=1\\), and then \\(2n+1=7\\), giving \\(n=3\\).",
+        "Therefore, \\[\n(m,n)=\\boxed{(1,3)}.\n\\]"
+      ]
+    },
+    {
+      "q": "In the row of Pascal's triangle that starts 1, 11, what is the ninth number?",
+      "ans": "165",
+      "pos": 0,
+      "step": "The row beginning \\(1,11\\) consists of the binomial coefficients \\(\\binom{11}{k}\\) for \\(k=0,\\ldots,11\\).",
+      "abs": "The row beginning \\(1,11\\) consists of the binomial coefficients \\(\\binom{11}{k}\\) for \\(k=_,\\ldots,11\\).",
+      "eff": 0.75,
+      "eff_abs": 0.0,
+      "steps": [
+        "The row beginning \\(1,11\\) consists of the binomial coefficients \\(\\binom{11}{k}\\) for \\(k=0,\\ldots,11\\).",
+        "Its ninth entry is \\(\\binom{11}{8}\\), so \\[\n\\binom{11}{8}=\\binom{11}{3}=\\frac{11\\cdot10\\cdot9}{3\\cdot2\\cdot1}= \\boxed{165}.\n\\]"
+      ]
+    },
+    {
+      "q": "In $\\triangle XYZ$, we have $\\angle X = 90^\\circ$ and $\\tan Z = 7$.  If $YZ = 100$, then what is $XY$?",
+      "ans": "70\\sqrt{2}",
+      "pos": 1,
+      "step": "Also, \\(\\tan Z=XY/XZ=7\\), so set \\(XZ=t\\) and \\(XY=7t\\).",
+      "abs": "Also, \\(\\tan Z=XY/XZ=7\\), so set \\(XZ=t\\) and \\(XY=7t\\).",
+      "eff": 0.75,
+      "eff_abs": 0.5,
+      "steps": [
+        "Since \\(\\angle X=90^\\circ\\), \\(YZ\\) is the hypotenuse.",
+        "Also, \\(\\tan Z=XY/XZ=7\\), so set \\(XZ=t\\) and \\(XY=7t\\).",
+        "By the Pythagorean theorem, \\[\n100^2=t^2+(7t)^2=50t^2,\n\\]",
+        "so \\(t=10\\sqrt{2}\\).",
+        "Therefore \\(XY=7t=\\boxed{70\\sqrt{2}}\\)."
+      ]
+    },
+    {
+      "q": "The sum $10 e^{2 \\pi i/11} + 10 e^{15 \\pi i/22}$ is expressed as $re^{i \\theta}.$  Enter the ordered pair $(r, \\theta).$",
+      "ans": "\\left( 10 \\sqrt{2}, \\frac{19 \\pi}{44} \\right)",
+      "pos": 1,
+      "step": "Thus their sum has magnitude \\(20\\cos(\\pi/4)=10\\sqrt2\\) and argument equal to the average of their arguments: \\[\n\\frac12\\left(\\frac{2\\pi}{11}+\\frac{15\\pi}{22}\\right)=\\frac{19\\pi}{44}.\n\\]",
+      "abs": "Thus their sum has magnitude \\(_\\cos(\\pi/_)=10\\sqrt2\\) and argument equal to the average of their arguments: \\[\n\\frac_\\left(\\frac{2\\pi}{11}+\\frac{15\\pi}{22}\\right)=\\frac{_\\pi}{_}.\n\\]",
+      "eff": 0.75,
+      "eff_abs": 0.125,
+      "steps": [
+        "The two summands have equal magnitude, and their arguments differ by \\[\n\\frac{15\\pi}{22}-\\frac{2\\pi}{11}=\\frac{\\pi}{2}.\n\\]",
+        "Thus their sum has magnitude \\(20\\cos(\\pi/4)=10\\sqrt2\\) and argument equal to the average of their arguments: \\[\n\\frac12\\left(\\frac{2\\pi}{11}+\\frac{15\\pi}{22}\\right)=\\frac{19\\pi}{44}.\n\\]",
+        "Therefore the ordered pair is \\(\\boxed{\\left(10\\sqrt2,\\frac{19\\pi}{44}\\right)}.\\)"
+      ]
+    },
+    {
+      "q": "Six congruent circles form a ring with each circle externally tangent to the two circles adjacent to it.  All six circles are internally tangent to a circle $\\cal C$ with radius 30.  Let $K$ be the area of the region inside $\\cal C$ and outside all of the six circles in the ring.  Find $\\lfloor K\\rf",
+      "ans": "942",
+      "pos": 4,
+      "step": "Hence \\(30-r=2r\\), giving \\(r=10\\).",
+      "abs": "Hence \\(30-r=_r\\), giving \\(r=_\\).",
+      "eff": 0.75,
+      "eff_abs": 0.125,
+      "steps": [
+        "Let \\(r\\) be the radius of each small circle.",
+        "Their centers lie on a circle centered at the center of \\(\\cal C\\), at distance \\(30-r\\).",
+        "The six centers are equally spaced around this circle, and adjacent centers are \\(2r\\) apart.",
+        "Thus their chord subtends \\(60^\\circ\\), so the center-circle radius is \\(2r\\).",
+        "Hence \\(30-r=2r\\), giving \\(r=10\\).",
+        "The desired area is consequently \\[\nK=\\pi(30)^2-6\\pi(10)^2=300\\pi.\n\\]"
+      ]
+    },
+    {
+      "q": "Sector $OAB$ is a quarter of a circle of radius 3 cm. A circle is drawn inside this sector, tangent at three points as shown. What is the number of centimeters in the radius of the inscribed circle? Express your answer in simplest radical form. [asy]\nimport olympiad; import geometry; size(100); defa",
+      "ans": "3\\sqrt{2}-3",
+      "pos": 2,
+      "step": "Internal tangency to the quarter circle of radius \\(3\\) also makes this center distance \\(3-r\\). \\[\nr\\sqrt2=3-r,\n\\qquad\nr=\\frac{3}{1+\\sqrt2}=3(\\sqrt2-1).\n\\]",
+      "abs": "Internal tangency to the quarter circle of radius \\(3\\) also makes this center distance \\(3-r\\). \\[\nr\\sqrt2=3-r,\n\\qquad\nr=\\frac{3}{1+\\sqrt2}=3(\\sqrt2-1).\n\\]",
+      "eff": 0.75,
+      "eff_abs": 0.75,
+      "steps": [
+        "Let the inscribed circle have radius \\(r\\).",
+        "Since it is tangent to both perpendicular radii, its center is distance \\(r\\) from each radius, so its distance from \\(O\\) is \\(r\\sqrt2\\).",
+        "Internal tangency to the quarter circle of radius \\(3\\) also makes this center distance \\(3-r\\). \\[\nr\\sqrt2=3-r,\n\\qquad\nr=\\frac{3}{1+\\sqrt2}=3(\\sqrt2-1).\n\\]",
+        "The radius is \\(\\boxed{3(\\sqrt2-1)}\\) centimeters."
+      ]
+    },
+    {
+      "q": "If $a$, $b$, and $c$ are integers satisfying $a + \\frac 1b = \\frac{22}{7}$, $b + \\frac 1c = 8$, and $abc = 21$, then find $c + \\frac 1a$. Express your answer as a common fraction.",
+      "ans": "\\frac 43",
+      "pos": 2,
+      "step": "In the first case, \\(abc=21\\) gives \\(a=3\\), which also satisfies the first equation.",
+      "abs": "In the first case, \\(abc=21\\) gives \\(a=_\\), which also satisfies the first equation.",
+      "eff": 0.75,
+      "eff_abs": 0.125,
+      "steps": [
+        "From \\(b+\\frac1c=8\\), multiplying by the nonzero integer \\(c\\) gives \\[\nc(b-8)=-1.\n\\]",
+        "Thus either \\((c,b)=(1,7)\\) or \\((c,b)=(-1,9)\\).",
+        "In the first case, \\(abc=21\\) gives \\(a=3\\), which also satisfies the first equation.",
+        "In the second case, \\(abc=21\\) would give \\(-9a=21\\), impossible for integer \\(a\\). \\[\nc+\\frac1a=1+\\frac13=\\boxed{\\frac43}.\n\\]"
+      ]
+    },
+    {
+      "q": "Find all values of $x$ such that\n\\[\n\\begin{vmatrix} 1 & 1 & 1 \\\\ x & 7 & -2 \\\\ x^3 & 343 & -8 \\end{vmatrix}\n= 0.\\]Enter your values separated by commas.  For example, if you think the possible values are 4, 5, and 6, then enter you answer as \"4,5,6\".",
+      "ans": "7, -2, \\text{ and } -5",
+      "pos": 0,
+      "step": "Expanding the determinant along the first row gives \\[\n630-(-8x+2x^3)+(343x-7x^3)\n=630+351x-9x^3.\n\\] \\[\n630+351x-9x^3=-9(x+5)(x+2)(x-7).\n\\]",
+      "abs": "Expanding the determinant along the first row gives \\[\n_-(-8x+2x^3)+(343x-7x^3)\n=_+_x-_x^3.\n\\] \\[\n_+_x-_x^3=-_(x+5)(x+2)(x-7).\n\\]",
+      "eff": 0.75,
+      "eff_abs": 0.375,
+      "steps": [
+        "Expanding the determinant along the first row gives \\[\n630-(-8x+2x^3)+(343x-7x^3)\n=630+351x-9x^3.\n\\] \\[\n630+351x-9x^3=-9(x+5)(x+2)(x-7).\n\\]",
+        "Thus the determinant vanishes exactly when \\(x=\\boxed{-5,-2,7}\\)."
+      ]
+    },
+    {
+      "q": "A portion of the graph of $f(x)=ax^3+bx^2+cx+d$ is shown below.\n\nWhat is the value of $8a-4b+2c-d$?\n\n[asy]\nimport graph; size(7cm); real lsf=0.5; pen dps=linewidth(0.7)+fontsize(10); defaultpen(dps); pen ds=black; real xmin=-3.25,xmax=4.25,ymin=-9.25,ymax=4.25;\n\npen cqcqcq=rgb(0.75,0.75,0.75);\n\n/*gr",
+      "ans": "3",
+      "pos": 2,
+      "step": "From the graph, \\(f(-2)=-3\\).",
+      "abs": "From the graph, \\(f(-2)=-3\\).",
+      "eff": 0.625,
+      "eff_abs": 0.25,
+      "steps": [
+        "For \\(f(x)=ax^3+bx^2+cx+d\\), \\[\nf(-2)=-8a+4b-2c+d,\n\\]",
+        "so \\(8a-4b+2c-d=-f(-2)\\).",
+        "From the graph, \\(f(-2)=-3\\).",
+        "Hence the requested value is \\(\\boxed{3}\\)."
+      ]
+    },
+    {
+      "q": "Let $S$ denote the value of the sum\n\\[\\sum_{n = 1}^{9800} \\frac{1}{\\sqrt{n + \\sqrt{n^2 - 1}}}\\]\n$S$ can be expressed as $p + q \\sqrt{r}$, where $p, q,$ and $r$ are positive integers and $r$ is not divisible by the square of any prime. Determine $p + q + r$.",
+      "ans": "121",
+      "pos": 3,
+      "step": "Using \\(\\sqrt{9801}=99\\) and \\(\\sqrt{9800}=70\\sqrt2\\), we obtain \\(S=70+49\\sqrt2\\).",
+      "abs": "Using \\(\\sqrt{_}=_\\) and \\(\\sqrt{9800}=_\\sqrt2\\), we obtain \\(S=_+_\\sqrt2\\).",
+      "eff": 0.625,
+      "eff_abs": 0.0,
+      "steps": [
+        "For each \\(n\\geq 1\\), rationalizing gives \\[\n\\frac{1}{\\sqrt{n+\\sqrt{n^2-1}}}\n=\\frac{\\sqrt{n+1}-\\sqrt{n-1}}{\\sqrt{2}},\n\\]",
+        "since \\((\\sqrt{n+1}+\\sqrt{n-1})^2=2(n+\\sqrt{n^2-1})\\).",
+        "The sum therefore telescopes: \\[\nS=\\frac{1}{\\sqrt2}\\sum_{n=1}^{9800}\\bigl(\\sqrt{n+1}-\\sqrt{n-1}\\bigr)\n=\\frac{\\sqrt{9801}+\\sqrt{9800}-\\sqrt1-\\sqrt0}{\\sqrt2}.\n\\]",
+        "Using \\(\\sqrt{9801}=99\\) and \\(\\sqrt{9800}=70\\sqrt2\\), we obtain \\(S=70+49\\sqrt2\\).",
+        "Thus \\(p+q+r=70+49+2=\\boxed{121}\\).]"
+      ]
+    },
+    {
+      "q": "Let $n$ be a positive integer.  The sequence $(x_k)$ is defined by $x_0 = 0,$ $x_1 = 1,$ and\n\\[x_{k + 2} = \\frac{(n - 1) x_{k + 1} - (n - k) x_k}{k + 1}\\]for $k \\ge 0.$  Find $x_0 + x_1 + x_2 + \\dotsb$ as a function of $n.$",
+      "ans": "2^{n - 1}",
+      "pos": 5,
+      "step": "Therefore \\[\n\\sum_{k=0}^{\\infty}x_k\n=\\sum_{j=0}^{m}\\binom{m}{j}\n=2^m\n=2^{n-1}.\n\\]",
+      "abs": "Therefore \\[\n\\sum_{k=0}^{\\infty}x_k\n=\\sum_{j=0}^{m}\\binom{m}{j}\n=2^m\n=2^{n-1}.\n\\]",
+      "eff": 0.625,
+      "eff_abs": 0.75,
+      "steps": [
+        "Write \\(m=n-1\\).",
+        "The recurrence gives \\(x_2=m\\), and for \\(k\\ge 1\\) the terms satisfy \\[\nx_k=\\binom{m}{k-1}.\n\\]",
+        "Indeed, if this holds for \\(x_k,x_{k+1}\\), then \\[\nx_{k+2}\n=\\frac{m\\binom{m}{k}-(m+1-k)\\binom{m}{k-1}}{k+1}\n=\\frac{(m-k)\\binom{m}{k}}{k+1}\n=\\binom{m}{k+1},\n\\]",
+        "using \\((m+1-k)\\binom{m}{k-1}=k\\binom{m}{k}\\).",
+        "Binomial coefficients outside their usual range are zero, so the sequence terminates.",
+        "Therefore \\[\n\\sum_{k=0}^{\\infty}x_k\n=\\sum_{j=0}^{m}\\binom{m}{j}\n=2^m\n=2^{n-1}.\n\\]"
+      ]
+    },
+    {
+      "q": "Find the $\\emph{positive}$ real number(s) $x$ such that $\\frac{1}{2}\\left( 3x^2-1\\right) = \\left( x^2-50x-10\\right)\\left( x^2+25x+5\\right)$.",
+      "ans": "25 + 2\\sqrt{159}",
+      "pos": 5,
+      "step": "Of the first pair, only \\(25+2\\sqrt{159}\\) is positive.",
+      "abs": "Of the first pair, only \\(25+2\\sqrt{_}\\) is positive.",
+      "eff": 0.625,
+      "eff_abs": 0.0,
+      "steps": [
+        "Let \\(U=x^2-50x-10\\) and \\(V=x^2+25x+5\\).",
+        "Since \\(U+2V=3x^2\\), the equation becomes \\[\nUV=\\frac{U+2V-1}{2},\n\\]",
+        "or equivalently \\[\n(U-1)(2V-1)=0.\n\\]",
+        "Thus either \\(x^2-50x-11=0\\), whose roots are \\(25\\pm2\\sqrt{159}\\), or \\(2x^2+50x+9=0\\).",
+        "The latter has both roots negative because its roots are \\((-25\\pm\\sqrt{607})/2\\) and \\(\\sqrt{607}<25\\).",
+        "Of the first pair, only \\(25+2\\sqrt{159}\\) is positive."
+      ]
+    },
+    {
+      "q": "The planes defined by\n\\begin{align*}\n-x + cy + bz &= 0, \\\\\ncx - y + az &= 0, \\\\\nbx + ay - z &= 0\n\\end{align*}all contain the same line.  Find all possible values of\n\\[a^2 + b^2 + c^2 + 2abc.\\]Enter all the possible values, separated by commas.",
+      "ans": "1",
+      "pos": 2,
+      "step": "Hence the requested expression must equal \\(1\\).",
+      "abs": "Hence the requested expression must equal \\(_\\).",
+      "eff": 0.625,
+      "eff_abs": 0.0,
+      "steps": [
+        "The three planes pass through the origin.",
+        "Their intersection contains a line exactly when their normal vectors have rank at most \\(2\\), so the determinant of their coefficient matrix must vanish: \\[\n\\det\\begin{pmatrix}-1&c&b\\\\c&-1&a\\\\b&a&-1\\end{pmatrix}\n=-1+a^2+b^2+c^2+2abc=0.\n\\]",
+        "Hence the requested expression must equal \\(1\\).",
+        "This value is attainable:",
+        "setting \\(a=b=c=\\tfrac12\\) makes the matrix have rank \\(2\\), so the planes share a line.",
+        "Thus the only possible value is \\(\\boxed{1}\\)."
+      ]
+    },
+    {
+      "q": "A cone has a volume of $12288\\pi$ cubic inches and the vertex angle of the vertical cross section is 60 degrees. What is the height of the cone? Express your answer as a decimal to the nearest tenth. [asy]\n\nimport markers;\nsize(150);\nimport geometry;\ndraw(scale(1,.2)*arc((0,0),1,0,180),dashed);\ndraw",
+      "ans": "48.0",
+      "pos": 0,
+      "step": "In an axial cross section, the cone's height \\(h\\), radius \\(r\\), and half of the \\(60^\\circ\\) vertex angle form a right triangle. \\[\n\\frac rh=\\tan 30^\\circ=\\frac1{\\sqrt3},\n\\qquad r=\\frac h{\\sqrt3}.\n\\]",
+      "abs": "In an axial cross section, the cone's height \\(h\\), radius \\(r\\), and half of the \\(60^\\circ\\) vertex angle form a right triangle. \\[\n\\frac rh=\\tan _^\\circ=\\frac1{\\sqrt3},\n\\qquad r=\\frac h{\\sqrt3}.\n\\]",
+      "eff": 0.625,
+      "eff_abs": 0.25,
+      "steps": [
+        "In an axial cross section, the cone's height \\(h\\), radius \\(r\\), and half of the \\(60^\\circ\\) vertex angle form a right triangle. \\[\n\\frac rh=\\tan 30^\\circ=\\frac1{\\sqrt3},\n\\qquad r=\\frac h{\\sqrt3}.\n\\]",
+        "Using the cone volume, \\[\n12288\\pi=\\frac13\\pi r^2h\n=\\frac13\\pi\\left(\\frac{h^2}{3}\\right)h\n=\\frac{\\pi h^3}{9}.\n\\]",
+        "So \\(h^3=110592=48^3\\), and the height to the nearest tenth is \\(\\boxed{48.0\\text{ inches}}\\).]"
+      ]
+    },
+    {
+      "q": "The expression\n\\[2 \\sqrt[3]{3 \\sec^2 20^\\circ \\sin^2 10^\\circ}\\]can be expressed in the form $a + b \\sec 20^\\circ,$ where $a$ and $b$ are integers.  Find the ordered pair $(a,b).$",
+      "ans": "(2,-1)",
+      "pos": 4,
+      "step": "As \\(1-\\frac1{2c}>0\\), the expression in the question is \\[\n2\\left(1-\\frac{1}{2c}\\right)=2-\\sec 20^\\circ.\n\\]",
+      "abs": "As \\(_-\\frac_{2c}>_\\), the expression in the question is \\[\n2\\left(_-\\frac{_}{2c}\\right)=2-\\sec 20^\\circ.\n\\]",
+      "eff": 0.5,
+      "eff_abs": 0.25,
+      "steps": [
+        "Let \\(c=\\cos 20^\\circ\\).",
+        "Since \\(\\sin^2 10^\\circ=(1-c)/2\\), \\[\n3\\sec^2 20^\\circ\\sin^2 10^\\circ=\\frac{3(1-c)}{2c^2}.\n\\]",
+        "The triple-angle identity gives \\(8c^3-6c-1=0\\), so \\[\n(2c-1)^3=8c^3-12c^2+6c-1=12c(1-c).\n\\]",
+        "Therefore \\(\\frac{3(1-c)}{2c^2}=(1-\\frac1{2c})^3\\).",
+        "As \\(1-\\frac1{2c}>0\\), the expression in the question is \\[\n2\\left(1-\\frac{1}{2c}\\right)=2-\\sec 20^\\circ.\n\\]",
+        "Thus \\((a,b)=\\boxed{(2,-1)}\\)."
+      ]
+    },
+    {
+      "q": "In the row of Pascal's triangle that starts with 1 and then 12, what is the fourth number?",
+      "ans": "220",
+      "pos": 0,
+      "step": "The row whose second entry is \\(12\\) is the row with entries \\(\\binom{12}{k}\\).",
+      "abs": "The row whose second entry is \\(12\\) is the row with entries \\(\\binom{12}{k}\\).",
+      "eff": 0.5,
+      "eff_abs": 0.25,
+      "steps": [
+        "The row whose second entry is \\(12\\) is the row with entries \\(\\binom{12}{k}\\).",
+        "Its first four entries are \\[\n\\binom{12}{0}=1,\\quad \\binom{12}{1}=12,\\quad \\binom{12}{2}=66,\\quad \\binom{12}{3}=220.\n\\]",
+        "Thus the fourth number is \\(\\boxed{220}\\)."
+      ]
+    },
+    {
+      "q": "Square $ABCD$ has side length $s$, a circle centered at $E$ has radius $r$, and $r$ and $s$ are both rational. The circle passes through $D$, and $D$ lies on $\\overline{BE}$. Point $F$ lies on the circle, on the same side of $\\overline{BE}$ as $A$. Segment $AF$ is tangent to the circle, and $AF=\\sqr",
+      "ans": "\\frac{5}{9}",
+      "pos": 5,
+      "step": "As \\(s>0\\), \\(s=3\\), and then \\(r=5/3\\).",
+      "abs": "As \\(s>0\\), \\(s=_\\), and then \\(r=5/_\\).",
+      "eff": 0.5,
+      "eff_abs": 0.0,
+      "steps": [
+        "Set \\(B=(0,0)\\), \\(A=(0,s)\\), and \\(D=(s,s)\\).",
+        "Since \\(B,D,E\\) are collinear with \\(D\\) between \\(B\\) and \\(E\\), and \\(DE=r\\), we have \\(E=(s+r/\\sqrt2,s+r/\\sqrt2)\\).",
+        "Consequently, \\[\nAE^2=(s+r/\\sqrt2)^2+(r/\\sqrt2)^2=s^2+\\sqrt2\\,sr+r^2.\n\\]",
+        "The tangent-length theorem gives \\(AF^2=AE^2-r^2\\), so \\[\ns^2+\\sqrt2\\,sr=9+5\\sqrt2.\n\\]",
+        "Because \\(r\\) and \\(s\\) are rational, comparing rational and irrational parts yields \\(s^2=9\\) and \\(sr=5\\).",
+        "As \\(s>0\\), \\(s=3\\), and then \\(r=5/3\\)."
+      ]
+    },
+    {
+      "q": "The sum\\[\\sum_{x=2}^{44} 2\\sin{x}\\sin{1}[1 + \\sec (x-1) \\sec (x+1)]\\]can be written in the form $\\sum_{n=1}^{4} (-1)^n \\frac{\\Phi(\\theta_n)}{\\Psi(\\theta_n)}$, where $\\Phi,\\, \\Psi$ are trigonometric functions and $\\theta_1,\\, \\theta_2, \\, \\theta_3, \\, \\theta_4$ are degrees $\\in [0,45]$. Find $\\theta_",
+      "ans": "92",
+      "pos": 3,
+      "step": "This has the stated alternating form by taking \\(\\Phi(t)=\\cos^2 t-1\\), \\(\\Psi(t)=\\cos t\\), and \\((\\theta_1,\\theta_2,\\theta_3,\\theta_4)=(45^\\circ,2^\\circ,44^\\circ,1^\\circ)\\), since \\(\\Phi(t)/\\Psi(t)=f(t)\\).",
+      "abs": "This has the stated alternating form by taking \\(\\Phi(t)=\\cos^2 t-1\\), \\(\\Psi(t)=\\cos t\\), and \\((\\theta_1,\\theta_2,\\theta_3,\\theta_4)=(45^\\circ,2^\\circ,44^\\circ,1^\\circ)\\), since \\(\\Phi(t)/\\Psi(t)=f(t)\\).",
+      "eff": 0.5,
+      "eff_abs": 0.75,
+      "steps": [
+        "Measure the angles in degrees, and set \\(f(t)=\\cos t-\\sec t\\).",
+        "Using \\(2\\sin x\\sin 1=\\cos(x-1)-\\cos(x+1)\\), each summand becomes \\[\n\\begin{aligned}\n2\\sin x\\sin 1\\bigl[1+\\sec(x-1)\\sec(x+1)\\bigr]\n&=\\cos(x-1)-\\cos(x+1)+\\sec(x+1)-\\sec(x-1)\\\\\n&=f(x-1)-f(x+1).\n\\end{aligned}\n\\]",
+        "Summing from \\(x=2\\) to \\(44\\), the terms cancel in steps of two, leaving \\[\nf(1)+f(2)-f(44)-f(45).\n\\]",
+        "This has the stated alternating form by taking \\(\\Phi(t)=\\cos^2 t-1\\), \\(\\Psi(t)=\\cos t\\), and \\((\\theta_1,\\theta_2,\\theta_3,\\theta_4)=(45^\\circ,2^\\circ,44^\\circ,1^\\circ)\\), since \\(\\Phi(t)/\\Psi(t)=f(t)\\).",
+        "Therefore \\[\n\\theta_1+\\theta_2+\\theta_3+\\theta_4=45^\\circ+2^\\circ+44^\\circ+1^\\circ=\\boxed{92^\\circ}.\n\\]"
+      ]
+    },
+    {
+      "q": "Three of the four vertices of a rectangle are $(5, 11)$, $(16, 11)$ and $(16, -2)$. What is the area of the intersection of this rectangular region and the region inside the graph of the equation $(x - 5)^2 + (y + 2)^2 = 9$? Express your answer in terms of $\\pi$.",
+      "ans": "\\frac94\\pi",
+      "pos": 4,
+      "step": "Its area is \\[\n\\frac14\\pi(3)^2=\\frac{9\\pi}{4}.\n\\]",
+      "abs": "Its area is \\[\n\\frac_\\pi(_)^2=\\frac{9\\pi}{_}.\n\\]",
+      "eff": 0.5,
+      "eff_abs": 0.125,
+      "steps": [
+        "The rectangle has corners \\((5,-2)\\), \\((16,-2)\\), \\((16,11)\\), and \\((5,11)\\).",
+        "The circle has center \\((5,-2)\\) and radius \\(3\\).",
+        "Within the rectangle, the portion of the circle lies in the quadrant to the right of and above its center;",
+        "the rectangle contains this entire quarter-circle.",
+        "Its area is \\[\n\\frac14\\pi(3)^2=\\frac{9\\pi}{4}.\n\\]",
+        "Therefore, the result is \\(\\boxed{\\frac{9\\pi}{4}}\\)."
+      ]
+    },
+    {
+      "q": "The polynomials $x^2 - 7x + b = 0$ and $x^2 + 2x - 2b = 0$ have a root in common.  Enter all the possible values of this root, separated by commas.",
+      "ans": "0,4",
+      "pos": 0,
+      "step": "Subtracting the two equations for a common root \\(x\\) gives \\[\n-9x+3b=0,\\qquad\\text{so}\\qquad b=3x.\n\\]",
+      "abs": "Subtracting the two equations for a common root \\(x\\) gives \\[\n-_x+_b=0,\\qquad\\text{so}\\qquad b=_x.\n\\]",
+      "eff": 0.375,
+      "eff_abs": 0.375,
+      "steps": [
+        "Subtracting the two equations for a common root \\(x\\) gives \\[\n-9x+3b=0,\\qquad\\text{so}\\qquad b=3x.\n\\]",
+        "Substitution into the first equation yields \\[\nx^2-7x+3x=x^2-4x=x(x-4)=0.\n\\]",
+        "Thus \\(x=0\\) or \\(x=4\\).",
+        "Both work:",
+        "they correspond respectively to \\(b=0\\) and \\(b=12\\), so the possible roots are \\(\\boxed{0,4}\\)."
+      ]
+    },
+    {
+      "q": "Two boards, one four inches wide and the other six inches wide, are nailed together to form an X. The angle at which they cross is 60 degrees. If this structure is painted and the boards are separated what is the area of the unpainted region on the four-inch board? (The holes caused by the nails are",
+      "ans": "16\\sqrt{3}",
+      "pos": 3,
+      "step": "Hence its area is \\[\n\\frac{4\\cdot6}{\\sin60^\\circ}\n=\\frac{24}{\\sqrt3/2}\n=16\\sqrt3.\n\\]",
+      "abs": "Hence its area is \\[\n\\frac{4\\cdot6}{\\sin60^\\circ}\n=\\frac{_}{\\sqrt3/2}\n=_\\sqrt3.\n\\]",
+      "eff": 0.375,
+      "eff_abs": 0.0,
+      "steps": [
+        "The unpainted part is the overlap of the two boards.",
+        "The overlap is a parallelogram:",
+        "its area is the product of the boards' widths divided by the sine of their crossing angle.",
+        "Hence its area is \\[\n\\frac{4\\cdot6}{\\sin60^\\circ}\n=\\frac{24}{\\sqrt3/2}\n=16\\sqrt3.\n\\]",
+        "Thus the unpainted area on the four-inch board is \\(\\boxed{16\\sqrt3\\text{ in}^2}\\)."
+      ]
+    },
+    {
+      "q": "When the base 10 integer 269 is converted to base 5, what is the sum of the digits?",
+      "ans": "9",
+      "pos": 1,
+      "step": "so the base-\\(5\\) representation is \\(2034_5\\).",
+      "abs": "so the base-\\(5\\) representation is \\(__5\\).",
+      "eff": 0.375,
+      "eff_abs": -0.125,
+      "steps": [
+        "Repeated division by \\(5\\) gives \\[\n269=2\\cdot125+0\\cdot25+3\\cdot5+4,\n\\]",
+        "so the base-\\(5\\) representation is \\(2034_5\\).",
+        "Its digits sum to \\(2+0+3+4=\\boxed{9}\\)."
+      ]
+    },
+    {
+      "q": "Compute\n\\[e^{2 \\pi i/13} + e^{4 \\pi i/13} + e^{6 \\pi i/13} + \\dots + e^{24 \\pi i/13}.\\]",
+      "ans": "-1",
+      "pos": 0,
+      "step": "Let \\(\\zeta=e^{2\\pi i/13}\\).",
+      "abs": "Let \\(\\zeta=e^{2\\pi i/13}\\).",
+      "eff": 0.375,
+      "eff_abs": 0.875,
+      "steps": [
+        "Let \\(\\zeta=e^{2\\pi i/13}\\).",
+        "Then \\(\\zeta^{13}=1\\) and \\(\\zeta\\ne1\\), so the geometric sum gives \\[\n1+\\zeta+\\zeta^2+\\cdots+\\zeta^{12}\n=\\frac{1-\\zeta^{13}}{1-\\zeta}=0.\n\\]",
+        "The requested sum is \\(\\zeta+\\zeta^2+\\cdots+\\zeta^{12}\\), which is therefore \\(\\boxed{-1}\\).]"
+      ]
+    },
+    {
+      "q": "Find the product of the positive roots of $\\sqrt{1995} \\cdot x^{\\log_{1995}x}=x^2.$",
+      "ans": "3980025",
+      "pos": 0,
+      "step": "Since the logarithm requires \\(x>0\\), set \\(t=\\log_{1995}x\\), so \\(x=1995^t\\).",
+      "abs": "Since the logarithm requires \\(x>_\\), set \\(t=\\log_{1995}x\\), so \\(x=1995^t\\).",
+      "eff": 0.375,
+      "eff_abs": 0.125,
+      "steps": [
+        "Since the logarithm requires \\(x>0\\), set \\(t=\\log_{1995}x\\), so \\(x=1995^t\\).",
+        "The equation becomes \\[\n1995^{1/2} \\cdot 1995^{t^2}=1995^{2t},\n\\]",
+        "and hence \\(t^2-2t+\\frac12=0\\).",
+        "Its roots are \\(t=1\\pm\\frac{1}{\\sqrt{2}}\\), so the two positive roots in \\(x\\) have product \\[\n1995^{\\,1-\\frac{1}{\\sqrt2}} \\cdot 1995^{\\,1+\\frac{1}{\\sqrt2}}\n=1995^2.\n\\]",
+        "Thus the requested product is \\(\\boxed{1995^2}\\)."
+      ]
+    }
+  ],
+  "time": 1543.6
+}

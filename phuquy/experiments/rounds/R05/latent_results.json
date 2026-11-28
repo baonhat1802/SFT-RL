@@ -1,0 +1,99 @@
+{
+  "questions": 256,
+  "hard": 140,
+  "eval_q": 80,
+  "fit_q": 40,
+  "samples": 2,
+  "num_layers": 36,
+  "explained_var": {
+    "rank64@24": 0.43587538599967957
+  },
+  "configs": {
+    "none": {
+      "layer": 0,
+      "acc": 0.15,
+      "len": 628.2375,
+      "trunc": 0.2,
+      "rescue_allfail": 0.1,
+      "example": "To solve the problem, we need to find the product $\\prod_{n = 1}^{100} \\psi(3^n)$. We can start by analyzing the given functional equation:\n\n\\[\\psi(3x) + 3 \\psi(x) = \\psi^3(x).\\]\n\nFirst, let's try to find a form for $\\psi(x)$ that satisfies this equation. One possible candidate is a power function. Let's assume $\\psi(x) = k x^a$ for some constants $k$ and $a$. Substituting this into the functional",
+      "delta": 0.0,
+      "ci90": [
+        0.0,
+        0.0
+      ],
+      "mediated_share": 0.0
+    },
+    "full@12": {
+      "layer": 12,
+      "acc": 0.09375,
+      "len": 661.78125,
+      "trunc": 0.20625,
+      "rescue_allfail": 0.075,
+      "example": "To solve the problem, we need to find the product $\\prod_{n = 1}^{100} \\psi(3^n)$. We can start by analyzing the given functional equation:\n\n\\[\\psi(3x) + 3 \\psi(x) = \\psi^3(x).\\]\n\nFirst, let's try to find a form for $\\psi(x)$ that satisfies this equation. One possible candidate is a power function, i.e., $\\psi(x) = k x^a$. Substituting this into the equation, we get:\n\n\\[k (3x)^a + 3 k x^a = k^3 (x",
+      "delta": -0.05625,
+      "ci90": [
+        -0.11875,
+        0.00625
+      ],
+      "mediated_share": -0.12500000000000003
+    },
+    "full@24": {
+      "layer": 24,
+      "acc": 0.225,
+      "len": 680.425,
+      "trunc": 0.2,
+      "rescue_allfail": 0.175,
+      "example": "To solve the problem, we need to find the product $\\prod_{n = 1}^{100} \\psi(3^n)$, where $\\psi(1) = \\sqrt{2 + \\sqrt{2 + \\sqrt{2}}}$ and the function $\\psi$ satisfies the recurrence relation $\\psi(3x) + 3 \\psi(x) = \\psi^3(x)$ for all real $x$.\n\nFollowing the reasoning provided in the solution:\n\n1. **Identify the general solution for $\\psi(x)$:**\n   The given recurrence relation is linear, and the a",
+      "delta": 0.075,
+      "ci90": [
+        0.00625,
+        0.14375
+      ],
+      "mediated_share": 0.16666666666666669
+    },
+    "full@36": {
+      "layer": 36,
+      "acc": 0.6,
+      "len": 686.9625,
+      "trunc": 0.16875,
+      "rescue_allfail": 0.85,
+      "example": "To solve the problem, we need to find the product \\(\\prod_{n=1}^{100} \\psi(3^n)\\) given that the function \\(\\psi\\) satisfies \\(\\psi(1) = \\sqrt{2 + \\sqrt{2 + \\sqrt{2}}}\\) and the recurrence relation \\(\\psi(3x) + 3 \\psi(x) = \\psi^3(x)\\).\n\nThe given reference provides a detailed solution, which we will outline here for clarity:\n\n1. **Initial Value and Recurrence Relation**:\n    - We start with \\(\\psi",
+      "delta": 0.45,
+      "ci90": [
+        0.375,
+        0.53125
+      ],
+      "mediated_share": 1.0000000000000002
+    },
+    "rank64@24": {
+      "layer": 24,
+      "acc": 0.175,
+      "len": 687.9125,
+      "trunc": 0.16875,
+      "rescue_allfail": 0.1,
+      "example": "To solve the problem, we need to find the product \\(\\prod_{n=1}^{100} \\psi(3^n)\\). We start with the given functional equation and initial condition:\n\\[\n\\psi(1) = \\sqrt{2 + \\sqrt{2 + \\sqrt{2}}}\n\\]\nand the functional equation:\n\\[\n\\psi(3x) + 3 \\psi(x) = \\psi^3(x).\n\\]\n\nFirst, let's express \\(\\psi(x)\\) in terms of a basic form. Assume that \\(\\psi(x)\\) has a form that satisfies the functional equation.",
+      "delta": 0.025,
+      "ci90": [
+        -0.03156249999999998,
+        0.08125
+      ],
+      "mediated_share": 0.055555555555555566
+    },
+    "placebo@24": {
+      "layer": 24,
+      "acc": 0.11875,
+      "len": 641.81875,
+      "trunc": 0.1625,
+      "rescue_allfail": 0.05,
+      "example": "To solve the problem, we need to find the product $\\prod_{n = 1}^{100} \\psi(3^n)$. We start with the given functional equation and initial condition:\n\\[ \\psi(1) = \\sqrt{2 + \\sqrt{2 + \\sqrt{2}}}, \\]\n\\[ \\psi(3x) + 3 \\psi(x) = \\psi^3(x) \\quad \\text{for all real } x. \\]\n\nFirst, let's denote $\\psi(1) = a$. Then the functional equation becomes:\n\\[ \\psi(3x) + 3 \\psi(x) = \\psi^3(x). \\]\n\nWe can choose $x =",
+      "delta": -0.03125,
+      "ci90": [
+        -0.08125,
+        0.01875
+      ],
+      "mediated_share": -0.06944444444444445
+    }
+  },
+  "total_effect": 0.44999999999999996,
+  "time": 2672.2
+}

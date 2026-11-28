@@ -1,0 +1,151 @@
+{
+  "config": {
+    "questions": 384,
+    "max_hard": 120,
+    "max_mixed": 60,
+    "seeds": 8,
+    "max_facts": 5,
+    "max_completion": 1536,
+    "fdr": 0.1,
+    "mask": 0,
+    "d3_questions": 40,
+    "d3_seeds": 6,
+    "d3_batch": 48,
+    "d3_dtype": "float32",
+    "d3_force": 0,
+    "seed": 71,
+    "out": "runs/diag_causal_unmasked",
+    "selftest": false
+  },
+  "questions": 384,
+  "hard": 120,
+  "mixed": 60,
+  "seeds": 8,
+  "D1": {
+    "bh_p_cutoff": 0.007771517729974133,
+    "tests_real": 1342,
+    "sufficient_real": 113,
+    "placebo_tests": 120,
+    "placebo_sufficient": 1,
+    "placebo_PS_mean": 0.07954365079365079,
+    "skipped": {},
+    "hard_with_failed_seeds": 120,
+    "solvable_by_some_set": 36,
+    "min_sufficient_size": {
+      "2": 18,
+      "none": 84,
+      "1": 14,
+      "3": 4
+    },
+    "frac_min_size_le2_among_solvable": 0.8888888888888888,
+    "min_sufficient_size_K3plus": {
+      "2": 15,
+      "none": 54,
+      "1": 12,
+      "3": 4
+    },
+    "frac_min_size_le2_among_solvable_K3plus": 0.8709677419354839,
+    "necessary_facts_given_rest_hist": {
+      "5": 1,
+      "3": 5,
+      "1": 6,
+      "2": 4,
+      "4": 3,
+      "0": 1
+    },
+    "sufficient_single_yref_share_after_median": 0.159,
+    "sufficient_single_is_last_kept_fact_frac": 0.7857142857142857,
+    "best_single_PS_mean": 0.5646258503401361,
+    "PASS": true
+  },
+  "D2": {
+    "edge_tests": 256,
+    "bh_p_cutoff": -1.0,
+    "edges": 0,
+    "edge_frac": 0.0,
+    "questions_testable": 88,
+    "questions_with_edge": 0,
+    "placebo_tests": 180,
+    "placebo_edges": 0,
+    "mean_effect_edges_real": 0.06494140625,
+    "mean_effect_placebo": 0.007638888888888889,
+    "self_completion_mean": null,
+    "by_kind": {
+      "hard": {
+        "tests": 220,
+        "edges": 0
+      },
+      "mixed": {
+        "tests": 36,
+        "edges": 0
+      }
+    },
+    "PASS": false
+  },
+  "D4": {
+    "pairs": 124,
+    "spearman_obs_int": -0.04457156909380862,
+    "reliability_obs_splithalf": 0.5420550269756353,
+    "reliability_int_splithalf": 0.3291849025156709,
+    "noise_ceiling": 0.42241724776943457,
+    "obs_mean": 0.26627557030782834,
+    "int_mean": 0.09475806451612903,
+    "obs_positive": 54,
+    "spurious_among_obs_positive": 30,
+    "hidden_causes": 9,
+    "spurious_frac": 0.5555555555555556,
+    "PASS": true
+  },
+  "D3": {
+    "questions": 14,
+    "failed_tau": 75,
+    "base_success": 0.09523809523809523,
+    "continuations": 733,
+    "anchor_null_identical_frac": 1.0,
+    "anchor_null_div_share_median": 1.0,
+    "per_cut": {
+      "0": {
+        "n": 75,
+        "cut_share_median": 0.0,
+        "flip_fact": 0.30666666666666664,
+        "flip_placebo": 0.013333333333333334,
+        "flipped_shared_share_median": 0.0,
+        "flipped_div_after_cut_median": 0.0,
+        "flipped_mentions_note_frac": 0.043478260869565216
+      },
+      "1": {
+        "n": 74,
+        "cut_share_median": 0.24930502103858787,
+        "flip_fact": 0.2972972972972973,
+        "flip_placebo": 0.013513513513513514,
+        "flipped_shared_share_median": 0.25064562234091753,
+        "flipped_div_after_cut_median": 0.0,
+        "flipped_mentions_note_frac": 0.045454545454545456
+      },
+      "2": {
+        "n": 73,
+        "cut_share_median": 0.5,
+        "flip_fact": 0.2191780821917808,
+        "flip_placebo": 0.0410958904109589,
+        "flipped_shared_share_median": 0.4963651359275789,
+        "flipped_div_after_cut_median": 0.0,
+        "flipped_mentions_note_frac": 0.0
+      },
+      "3": {
+        "n": 70,
+        "cut_share_median": 0.7506501961580087,
+        "flip_fact": 0.2714285714285714,
+        "flip_placebo": 0.02857142857142857,
+        "flipped_shared_share_median": 0.7566089334548769,
+        "flipped_div_after_cut_median": 0.0,
+        "flipped_mentions_note_frac": 0.0
+      }
+    },
+    "prompt_hint": {
+      "flip": 0.52,
+      "flipped_div_tokens_median": 7.0
+    },
+    "PASS": true
+  },
+  "time": 4223.5
+}

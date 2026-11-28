@@ -1,0 +1,1 @@
+cfpair_reg_s3 cfpair --seed 3 --opt form=dpo --opt lam=0.2 --opt beta=10

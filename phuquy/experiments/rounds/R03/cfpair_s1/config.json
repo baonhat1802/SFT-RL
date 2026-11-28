@@ -1,0 +1,28 @@
+{
+  "args": {
+    "idea": "cfpair",
+    "opt": [],
+    "seed": 1,
+    "epochs": 1.0,
+    "max_rollouts": null,
+    "prompts_per_rollout": 128,
+    "limit": null,
+    "num_gen": 8,
+    "max_completion": 2048,
+    "lr": 1e-05,
+    "lora_r": 32,
+    "lora_alpha": 64,
+    "micro_batch": 8,
+    "tok_budget": 4096,
+    "vllm_sleep": 1,
+    "vllm_mem": 0.7,
+    "reward_workers": 8,
+    "out": "runs/r03/cfpair_s1",
+    "hub_repo": null,
+    "save_every": 5
+  },
+  "opts": {
+    "lam": 0.1,
+    "pert": "numbers"
+  }
+}

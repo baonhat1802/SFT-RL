@@ -3,7 +3,8 @@ Mỗi dòng: cơ chế (mô tả việc nó làm) — trạng thái — nguồn.
 Mô tả ở mục B lấy từ `related-work/README.md` (phần lớn từ tóm tắt, chưa đọc toàn văn) — đọc phần phương pháp trước khi kết luận trùng/không trùng.
 
 ## A. Người dùng đã bác (không đề xuất lại dưới bất kỳ dạng nào)
-_(chưa có)_
+- Hướng "tách nội dung / giọng văn của y*" (27/11): người dùng thấy bị lậm vào khung này, dừng. Gồm R03-4 `r03_crlsim` (không gian nội dung
+  học bằng cặp phản thực tế, CRL) — chưa chạy kiểm trước; R03-2 đã chết. R03-1 `cfpair_s1` đang chạy thì chạy hết làm mốc, không mở rộng thêm.
 
 ## B. Đã có trong văn liệu
 ### Gộp SFT + RL
@@ -90,3 +91,55 @@ _(chưa có)_
 - AND-mask/gradient bất biến giữa giọng y* và giọng của trò (R03-2 `r03_invar`) — CHẾT ở kiểm trước 27/11: mask cùng dấu ≈ cộng hai gradient
   thường (+0,094 vs +0,093), 3 môi trường dưới mốc ở batch 1 (`runs/diag_causal`).
 - Thầy-ngữ-cảnh: thầy với y* của CÂU KHÁC cho tín hiệu gần bằng thầy thật (+0,046 vs +0,06) → phần lớn tín hiệu là do ngữ cảnh (`runs/diag_causal`).
+### Tìm 2026-11-27 (sau khi dừng hướng nội dung/giọng văn)
+- Độ dài là biến gây nhiễu của phần thưởng / thiên lệch độ dài trong GRPO — Dr. GRPO (2503.20783), LUSPO (2602.05261), GRPO-LEAD (2504.09696). Không dùng y*.
+- Thiên lệch theo độ khó / đặt lại trọng số theo tỉ lệ giải — HA-DW "Your Group-Relative Advantage Is Biased" (2601.08521), GRPO-LEAD, 2607.00152. Không dùng y*.
+- Chọn phần gợi ý từ lời giải theo tác động lên tỉ lệ đúng (bỏ-từng-phần, tập tối thiểu đủ) — KnowRL (2604.12627: điểm kiến thức do DeepSeek-R1
+  trích, chọn tập con offline bằng độ chính xác khi bỏ từng điểm); gợi ý tiền tố lời giải — QuestA (2507.13266), ADHint (2512.13095); model tự dùng y*
+  tìm lỗi đầu tiên rồi thay một bước — InT (2601.14209).
+- Cặp phản thực tế cùng giọng, dạng tuyến tính λ·[NLL(y*) − NLL(ỹ*)] (R03-1 `cfpair`) — kiểm trước QUA (+0,10/+0,11) nhưng train SỤP từ rollout ~20
+  (`experiments/rounds/R03/cfpair_s1`): margin tăng không chặn. Bản có chặn chưa thử.
+- Thầy-có-y* làm control variate phụ thuộc hành động, bù chính xác trên từ vựng (AIPW/doubly robust cho GRPO, R04-1) — CHẾT ở kiểm trước 27/11:
+  |cos(CV, GRPO)| ≈ 0,05, đổi dấu giữa batch → giảm nhiễu < 0,5% (`experiments/rounds/R04/diag_dr.log`).
+- Lời nhắc chung tự đặt (nhắc lại đề / liệt kê định lý / trường hợp riêng / đi ngược) + chọn theo CATE (R04-3) — CHẾT ở kiểm trước 27/11: không nhánh
+  nào hơn lấy mẫu thường (−0,01…−0,02), chọn theo câu kém chọn chung. Câu đầu của y* làm gợi ý: +0,065 (KTC 90% +0,045…+0,085) — gần QuestA/KnowRL.
+
+## Rà văn liệu 27/11 (tối) — gợi ý/trừu tượng hoá cho câu khó, và RL thật ra mua được gì
+- **HINT** (arXiv 2510.09388, Findings ACL 2026): meta-hint (gợi ý trừu tượng, không lộ đáp án) > answer-hint (LUFFY, BREAD) trong GRPO. Khớp
+  `diag_insight`: gợi ý từng bước của Luna chủ yếu lộ giá trị; che số thì gần hết tác dụng.
+- **NuRL** (arXiv 2509.25666): tự sinh gợi ý trừu tượng cho câu 0% đúng; bật gợi ý SAU khi GRPO ổn định tốt hơn bật từ đầu.
+- **RLAD** (arXiv 2510.02263, ICLR 2026): hai người chơi — bộ sinh trừu tượng được thưởng bằng mức tăng độ đúng của bộ giải; khởi động bằng
+  trừu tượng từ o4-mini. Gần nhất với ý "chọn gợi ý theo hiệu ứng can thiệp lên trò" (HiLL cũng thưởng hinter theo mức tăng của trò).
+- **POPE** (arXiv 2601.18779), **QuestA** (2507.13266), **Off-Context GRPO** (2607.19313), **KnowRL** (2604.12627), **SAGE** (2602.03143),
+  **HiLL** (2604.00698): tiền tố/gợi ý từ lời giải mẫu cho câu cả-sai — đã có trong mục trước, nhắc lại vì cùng họ.
+- **ReasonFlux** (2502.06772) / **Buffer of Thoughts** (2406.04271): thư viện khuôn mẫu chiến lược rút từ lời giải.
+- **What Outcome RL Buys** (arXiv 2610.34894): ở trần 4k–8k, 82% lợi ích pass@1 của RL là "viết xong trong ngân sách" (finishing), "với tới
+  câu mới" (reach) ≤ 2,1 điểm. Khớp: GRPO@512 ≈ base@2048; `cfpair_reg` +4 TB @512 nhưng −1,5 @2048; khảo sát đọc tay (1/3 lỗi là hình thức).
+
+## Rà văn liệu 27/11 (khuya) — khung "imitation gap / thầy có thông tin riêng" cho SFT+RL
+- **ADVISOR** (Weihs và cs., NeurIPS 2021, arXiv 2007.12173): imitation gap; trộn IL/RL theo từng trạng thái, chỉ bắt chước nơi khoảng cách nhỏ
+  (ước bằng một chính sách phụ chỉ thấy quan sát của trò). Robot/agent; tác giả nói chưa kiểm ở ngôn ngữ.
+- **CHORD** (arXiv 2508.11408, ICLR 2026): SFT là số hạng phụ trong RL, μ toàn cục + trọng số token ϕ giảm token lệch nhiều (theo xác suất).
+- **SRFT** (2506.19767): trọng số theo entropy. **AMFT** (2508.06944): meta-học μ toàn cục.
+- **SGPO** (2606.24064): chưng cất CHIẾN LƯỢC thay vì quỹ đạo; trọng số từng câu α(q) theo khoảng cách pass-rate có-hướng-dẫn vs tự giải —
+  gần nhất với "trọng số theo khả năng tái tạo", nhưng ở cấp câu, không ở cấp bước.
+- **Small Models Struggle to Learn from Strong Reasoners** (2502.12143, ACL Findings 2025): learnability gap ở ≤3B; Mix Distillation.
+- Viết lại dữ liệu thầy về phân phối trò: SDFT (Yang 2024), TESSY (2604.14164), student-conditioned trace (2610.23831), BSD (2610.26397).
+- **Privileged AI feedback cho agent LLM** (2410.05434).
+→ Khung tổng quát ĐÃ được công nhận; ô trống còn lại: (1) ước lượng khả năng tái tạo bằng CAN THIỆP (trò viết tiếp từ tiền tố thầy có đúng không)
+  thay vì xác suất/entropy — có bằng chứng của mình rằng log-xác suất không đo được điều này (φ ≈ placebo; bước ý then chốt NLL thấp);
+  (2) tách hình thức (tái tạo được) khỏi nội dung (không) theo đúng tiêu chí imitation gap, ở ngân sách token chặt.
+
+## Rà văn liệu 28/11 — cfpair (cặp phản thực tế đổi giá trị) và "bộ kiểm từ lời giải mẫu" có ai làm chưa
+- **RISE** (arXiv 2410.06638, ACL 2025): model tự sửa vài token then chốt trong lời giải ĐÚNG CỦA CHÍNH NÓ để cài lỗi tinh vi → cặp DPO
+  (đúng vs bị cài lỗi) + cặp tự nhiên. GẦN NHẤT với cfpair. Khác: (1) ta cài lỗi vào LỜI GIẢI MẪU của thầy (y*), quy tắc đổi giá trị tính ra,
+  giữ nguyên văn; (2) ta trộn ONLINE trong GRPO (số hạng phụ có chặn), RISE là DPO offline; (3) ta có ablation chỉ ra cặp TỰ NHIÊN và chỉ-kéo-y*
+  đều sụp, placebo chỉ lấy ~1/3 lợi thế; (4) khung nhân quả (mang sang cơ chế kiểm, không mang sang chính sách) + đo bộ kiểm mang sang.
+- **SCDPO** (2407.00782): giữ các bước đúng tới điểm k rồi cho model sinh tiếp để có bước sai → cặp DPO. **Step-DPO** (2406.18629): bước chọn/loại.
+- **Hard Negative DPO cho model nhỏ** (2512.19728): lỗi cài vào (khác ít so với lời giải đúng) là mẫu âm khó.
+- PRM: **Controllable & Verifiable Process Data Synthesis** (2605.02395) cài lỗi vào chuỗi logic ký hiệu rồi tính lại các bước sau (chuyển sang
+  toán mới sơ bộ); **CMI PRM** (2604.10660) dùng lời giải mẫu GSM8K/MATH, không rollout, nhưng chấm bước bằng tương phản xác suất, không cài lỗi;
+  **RAWR** (2603.17815), **Adversarial PRM** (2511.22888) sinh lỗi bằng generator đối kháng.
+→ Kết luận: "cài lỗi tối thiểu → cặp tương phản" ĐÃ CÓ (RISE, hard negatives). Hướng B (PRM từ lời giải mẫu) dễ trùng, không ưu tiên.
+  Phần riêng còn lại của mình: online trong RL + lời giải của THẦY mạnh hơn (không phải lời giải của chính model) + ablation nhân quả cho thấy
+  CHỈ cặp giữ-văn-đổi-giá-trị mới chuyển được tín hiệu từ thầy, + phát hiện khoảng cách thầy–trò (phần nội dung ngược chiều khi trò đủ mạnh).

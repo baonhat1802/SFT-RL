@@ -1,19 +1,3 @@
-# Phu Quy — on-policy guidance workstream (snapshot 2026-11-27)
-
-| Folder | Content |
-|---|---|
-| `research/mentor_updates.md` | Weekly updates for the mentor (English): what was run, what was found, next steps |
-| `research/rounds/` | Idea cards per round (R01–R03), pre-screen results, prior-art list |
-| `code/beat/` | GRPO loop with idea hooks (`loop.py`), faster log-prob path (`fastlp.py`), first-order transfer diagnostics (`diag_cos.py`, `diag_fork.py`) |
-| `code/train/`, `code/evaluation/` | Baseline training (SFT, GRPO, SFT→GRPO) and evaluation code |
-| `experiments/` | Logs and evaluation summaries (phase 1, R01, R02/R03 diagnostics) |
-| `proposal/slides_v2/` | Proposal deck (HTML + PPTX) |
-| `related-work/` | Reading notes |
-
-Not included: the training data (`code/data/`), notebooks, paper PDFs, third-party code. Notes in `research/` are mostly in Vietnamese.
-
----
-
 # Capstone — GStar Bootcamp 2026
 
 **Cảm hứng:** BRIDGE — *Beyond Two-Stage Training: Cooperative SFT and RL for LLM Reasoning*

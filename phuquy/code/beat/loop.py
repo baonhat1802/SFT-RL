@@ -29,6 +29,11 @@ Ideas (opts are --opt key=value; every idea has novel=0 -> plain GRPO):
                 +/- signs (pert=operators) changed and every other character kept, so the writing style of y* cancels and only
                 "the correct value beats a wrong one in the same context" remains. Pre-screen: runs/diag_causal (+0.10/+0.11 vs
                 GRPO +0.07/+0.09). One y~* per question per rollout; novel=0 or lam=0 -> plain GRPO.
+                form=linear collapsed (cfpair_s1, the margin grew without bound). form=dpo bounds it: per pair
+                h = [mean logp(y*) - ref] - [mean logp(y~*) - ref] (ref = frozen initial model, adapter disabled),
+                loss lam * mean softplus(-beta*h)/beta: at h=0 the gradient is lam/2 x the linear one (lam=0.2 matches
+                the pre-screened linear lam=0.1), and it vanishes once the policy prefers y* over y~* by ~3/beta nat/token
+                more than the initial model.
 """
 from __future__ import annotations
 
@@ -61,7 +66,7 @@ TEACHER_TEMPLATE = (
     "\nPlease reason step by step, and put your final answer within \\boxed{{}}."
 )
 DEFAULT_OPTS = {
-    "grpo": {},
+    "grpo": {"lpen": 0.0, "ltgt": 550},
     "guide_tokw": {"hint": 1, "tokw": 1, "k_hint": 4, "gamma": 0.1, "w_lo": 0.5, "w_hi": 2.0},
     "fade": {"adapt": 1, "fixed_level": 0.5},
     "compress_sd": {"sd_coef": 0.1, "longonly": 1},
@@ -71,7 +76,7 @@ DEFAULT_OPTS = {
     # R01-6 potential-based shaping (Ng et al. 1999): V(prefix) = P(model writes the correct answer if it stops here),
     # per-segment advantage V(s_k) - V(s_{k-1}) added to the GRPO advantage, segments cut at newlines.
     "potential": {"eta": 1.0, "n_bound": 4},
-    "cfpair": {"lam": 0.1, "pert": "numbers"},
+    "cfpair": {"lam": 0.1, "pert": "numbers", "form": "linear", "beta": 10.0, "neg": 1, "pair": "cf", "inv": 0.0},
     "metaopsd": {"alpha": 1e-3, "inner_norm": 0.1, "hess_clip": 1.0, "keep_inner": 1, "hessian": 1, "query": "other", "meta": 1, "lam": 0.5, "max_s": 32, "eps": 0.01},
 }
 
@@ -91,6 +96,12 @@ def perturb(ref, kind, question, rng):
     if kind == "numbers":
         cand = [(st + m.start(), st + m.end()) for st, en in spans for m in re.finditer(r"\d+", ref[st:en])
                 if m.group() not in given]
+    elif kind == "prose":      # placebo: swap 1-2 prose words (outside math, before \\boxed) — validity unchanged
+        inside = lambda c: any(st <= c < en for st, en in spans)
+        cand = [(m.start(), m.end()) for m in re.finditer(r"[A-Za-z]{4,}", ref[:bx]) if not inside(m.start())]
+        words = sorted({ref[u:v] for u, v in cand})
+        if len(words) < 2:
+            return ref
     else:
         cand = [(st + m.start(), st + m.end()) for st, en in spans for m in re.finditer(r"[+-]", ref[st:en])]
     if not cand:
@@ -101,6 +112,8 @@ def perturb(ref, kind, question, rng):
         t = ref[u:v]
         if kind == "numbers":
             n = int(t); new = str(n + rng.choice([1, 2, 3]) if n < 3 else n + rng.choice([-2, -1, 1, 2, 3]))
+        elif kind == "prose":
+            new = rng.choice([w for w in words if w != t])
         else:
             new = "-" if t == "+" else "+"
         out += [ref[last:u], new]; last = v
@@ -111,7 +124,13 @@ def parse_opts(items):
     out = {}
     for it in items or []:
         k, v = it.split("=", 1)
-        out[k] = float(v) if any(c in v for c in ".e") else int(v) if v.lstrip("-").isdigit() else v
+        try:
+            out[k] = int(v)
+        except ValueError:
+            try:
+                out[k] = float(v)
+            except ValueError:
+                out[k] = v
     return out
 
 
@@ -469,6 +488,14 @@ def main():
         if a.vllm_sleep:          # generation for this rollout is done: give the GPU memory to training
             llm.sleep(level=1)
 
+        # ---- control: GRPO with a length penalty on CORRECT samples only (length-matched baseline for cfpair_reg);
+        # r = 1 - lpen * max(0, len - ltgt) / ltgt (floored at 0); wrong samples stay 0; logged reward above stays correctness
+        if a.idea == "grpo" and opts.get("lpen", 0) > 0:
+            for s in samples:
+                if s["r"] == 1:
+                    s["r"] = max(0.0, 1.0 - opts["lpen"] * max(0, len(s["comp"]) - opts["ltgt"]) / opts["ltgt"])
+            m["shaped_reward"] = float(np.mean([s["r"] for s in samples]))
+
         # ---- advantages per group (over everything in the group, hinted included)
         by_g = {}
         for s in samples:
@@ -593,20 +620,70 @@ def main():
         cf_halves = [[], []]
         if novel and a.idea == "cfpair" and opts["lam"] > 0:
             prng = random.Random(a.seed * 100003 + step)
+            prng_inv = random.Random(a.seed * 100003 + step + 7)
             pairs = []
-            for i in idx:
-                t = perturb(rows[i]["ref_txt"], opts["pert"], rows[i]["q_txt"], prng)
+            for g_, i in enumerate(idx):
+                if opts["pair"] == "natural":      # ablation: DPO on natural pairs, y* vs one of the student's own wrong solutions
+                    wr = [s_ for s_ in samples if s_["g"] == g_ and s_["r"] == 0 and not s_["trunc"]]
+                    if wr:
+                        c_ids = list(prng.choice(wr)["comp"])
+                        if not c_ids or c_ids[-1] != eos_id:
+                            c_ids.append(eos_id)
+                        pairs.append((rows[i]["p_ids"], rows[i]["ref_ids"] + [eos_id], c_ids, None))
+                    continue
+                kind = "prose" if opts["pair"] == "placebo" else opts["pert"]   # placebo: style-only counterfactual
+                t = perturb(rows[i]["ref_txt"], kind, rows[i]["q_txt"], prng)
                 if t != rows[i]["ref_txt"]:
+                    pl = None
+                    if opts["inv"] > 0:            # counterfactual invariance: a style-only twin of y* (own RNG, value pairs unchanged)
+                        tp = perturb(rows[i]["ref_txt"], "prose", rows[i]["q_txt"], prng_inv)
+                        pl = tok(tp, add_special_tokens=False)["input_ids"] + [eos_id] if tp != rows[i]["ref_txt"] else None
                     pairs.append((rows[i]["p_ids"], rows[i]["ref_ids"] + [eos_id],
-                                  tok(t, add_special_tokens=False)["input_ids"] + [eos_id]))
+                                  tok(t, add_special_tokens=False)["input_ids"] + [eos_id], pl))
             prng.shuffle(pairs)
+            if opts["form"] == "dpo":                 # reference token-mean log-probs, frozen initial model
+                model.eval()
+                with torch.no_grad(), model.disable_adapter():
+                    ry = logps_of([q[0] for q in pairs], [q[1] for q in pairs], grad=False)
+                    rc = logps_of([q[0] for q in pairs], [q[2] for q in pairs], grad=False)
+                    wpl = [k for k, q in enumerate(pairs) if q[3] is not None]
+                    rpl_l = logps_of([pairs[k][0] for k in wpl], [pairs[k][3] for k in wpl], grad=False) if wpl else []
+                rpl = {k: float(v.mean()) for k, v in zip(wpl, rpl_l)}
+                pairs = [(q[0], q[1], q[2], float(a_.mean()), float(b_.mean()), q[3], rpl.get(k))
+                         for k, (q, a_, b_) in enumerate(zip(pairs, ry, rc))]
+            else:
+                pairs = [(q[0], q[1], q[2]) for q in pairs]
             cf_halves = [pairs[: (len(pairs) + 1) // 2], pairs[(len(pairs) + 1) // 2:]]
             m["cf_n"] = len(pairs)
-        cf_marg, cf_loss = [], []
+        cf_marg, cf_loss, cf_h, cf_w, cf_hpl = [], [], [], [], []
 
         def cf_backward(pairs):
             """lam * [token-mean NLL(y*) - token-mean NLL(y~*)], backward in chunks of 8; logs the margin before the step."""
             if not pairs:
+                return
+            if opts["form"] == "dpo":
+                P, bt, tot = len(pairs), float(opts["beta"]), 0.0
+                for k0 in range(0, P, 8):
+                    ch = pairs[k0:k0 + 8]
+                    lpy = logps_of([q_[0] for q_ in ch], [q_[1] for q_ in ch], grad=True)
+                    # ablation neg=0: keep only the bounded pull toward y* (no counterfactual push), same form and weight
+                    lpc = logps_of([q_[0] for q_ in ch], [q_[2] for q_ in ch], grad=True) if opts["neg"] else [None] * len(ch)
+                    # counterfactual invariance: keep the policy INDIFFERENT to style-only twins (squared margin vs the frozen model)
+                    ipl = [k for k, q_ in enumerate(ch) if opts["inv"] > 0 and q_[5] is not None]
+                    lpl = dict(zip(ipl, logps_of([ch[k][0] for k in ipl], [ch[k][5] for k in ipl], grad=True))) if ipl else {}
+                    loss_c = 0.0; loss_i = 0.0
+                    for k, (q_, y_, c_) in enumerate(zip(ch, lpy, lpc)):
+                        h = (y_.mean() - q_[3]) - ((c_.mean() - q_[4]) if c_ is not None else 0.0)
+                        loss_c = loss_c + torch.nn.functional.softplus(-bt * h) / bt
+                        cf_h.append(float(h.detach())); cf_w.append(float(torch.sigmoid(-bt * h.detach())))
+                        cf_marg.append(float(y_.detach().mean() - (c_.detach().mean() if c_ is not None else q_[3])))
+                        if k in lpl:
+                            hp = (y_.mean() - q_[3]) - (lpl[k].mean() - q_[6])
+                            loss_i = loss_i + hp ** 2
+                            cf_hpl.append(float(hp.detach().abs()))
+                    ((opts["lam"] * loss_c + opts["inv"] * loss_i) / P).backward()
+                    tot += float(loss_c) * opts["lam"] / P + float(loss_i) * opts["inv"] / P
+                cf_loss.append(tot)
                 return
             nty = sum(len(y) for _, y, _ in pairs); ntc = sum(len(c) for _, _, c in pairs)
             tot = 0.0
@@ -659,6 +736,10 @@ def main():
         if cf_marg:
             m["cf_margin"] = float(np.mean(cf_marg))        # mean logp/token: y* minus y~* (> 0: prefers the correct value)
             m["cf_loss"] = float(np.sum(cf_loss))
+        if cf_h:
+            m["cf_h"] = float(np.mean(cf_h)); m["cf_w"] = float(np.mean(cf_w))      # margin vs initial model; mean sigmoid weight
+        if cf_hpl:
+            m["cf_hpl"] = float(np.mean(cf_hpl))     # |margin| y* vs its style-only twin (invariance term drives it to 0)
         m.update({"loss": float(np.mean(losses)), "t_gen": round(t_gen, 1), "t_old": round(t_old, 1),
                   "time": round(time.time() - t0, 1)})
         log_f.write(json.dumps(m) + "\n"); log_f.flush()

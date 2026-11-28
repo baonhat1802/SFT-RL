@@ -167,6 +167,73 @@ and SFT cannot separate the two. Three pre-screens test ways of isolating the co
   −0.09, negative in four of six). The token-class split in section 6 came from two consistent batches, but single-batch values should not be
   read as exact.
 
+### 8. Training run of the counterfactual pair (stopped, 2026-11-27)
+
+The counterfactual-pair term (λ = 0.1, one pair per question) was added to GRPO with everything else identical to the GRPO baseline run
+(same data order, seed, LoRA, 2,048-token budget). The run was stopped at rollout 30 of 66 because the training reward fell clearly below
+the baseline.
+
+| Rollouts | Training reward (pairs / GRPO) | Mean length (tokens) | Truncated | All-incorrect groups | Margin log p(y*) − log p(ỹ*) per token |
+|---|---|---|---|---|---|
+| 0–9 | 0.359 / 0.358 | 688 / 674 | 4.1% / 3.2% | 0.29 / 0.29 | 0.19 |
+| 10–19 | 0.518 / 0.507 | 735 / 712 | 6.0% / 2.1% | 0.21 / 0.21 | 0.38 |
+| 20–24 | 0.483 / 0.515 | 549 / 732 | 3.1% / 2.1% | 0.24 / 0.22 | 0.75 |
+| 25–29 | 0.403 / 0.543 | 572 / 708 | 5.2% / 1.4% | 0.30 / 0.19 | 1.08 |
+
+**Findings.** The positive first-order transfer measured at the initial model held for about twenty rollouts and then reversed. The
+margin between the correct and the counterfactual text kept growing without bound, because the term can always be lowered further by
+pushing the probability of the counterfactual text down, and the policy degraded as the margin grew. A bounded form of the term (logistic or
+hinge on the margin) would be needed for any further attempt; a first-order pre-screen at the initial model does not detect this failure.
+
+### 9. Causal pre-screens of a new round (2026-11-27)
+
+**Doubly robust use of the teacher (rejected).** The y*-teacher log-ratio was used as an action-dependent control variate for the GRPO
+gradient, with an exact full-vocabulary correction, so that the expected update equals the GRPO gradient and any bias of the teacher cannot
+enter. Both sanity checks held (the control variate has no alignment across halves or with the reward gradient), but its correlation with
+the GRPO noise was about ±0.05 and changed sign between batches, which caps the variance reduction below 0.5%.
+
+**Why (forward-pass diagnosis, 171 mixed groups).**
+
+| Teacher | AUC correct vs incorrect (mean log-ratio) | AUC, answer region only | Token-level correlation with the advantage |
+|---|---|---|---|
+| Full reference prompt | 0.66 | 0.60 | 0.007 |
+| Concise reference prompt | 0.67 | 0.63 | 0.006 |
+| Placebo: reference of another question | 0.64 | 0.47 | 0.004 |
+
+The teacher separates correct from incorrect solutions, but a placebo teacher does almost as well: most of the separation comes from the
+prompt frame, which penalises degenerate text (the largest log-ratios fall on garbage tokens, language switches and loops), not from the
+content of y*. The part specific to y* sits in the final-answer region, where the teacher knows the answer, which the reward already
+provides. At the level of single tokens the log-ratio is uncorrelated with the advantage, so a token-level control variate cannot help.
+
+**Self-chosen interventions on the context (rejected), and the effect of one sentence of y*.** On 224 hard questions (at most 2 of 8
+correct), generic self-prompts (restate the problem, list relevant theorems, solve a special case, work backwards) did not beat eight more
+plain samples (−0.01 to −0.02), and choosing a prompt per question did worse than one fixed choice. Giving only the first sentence of y*
+as a hint raised accuracy from 0.143 to 0.207 (+0.065, 90% interval +0.045 to +0.085) and solved 41% of all-incorrect questions against
+25%. The bottleneck on hard questions is the choice of the first move, and y* carries that information; a teacher that reads all of y*
+changes only about 1% of the tokens of the student's own solutions.
+
+**Opening swap: is the benefit of y* carried by the opening of the solution?** On 214 hard questions, every arm is continued by the
+model without y* in context. An opening of about 64 tokens written by the model with y* in context, then continued without y*, raised
+accuracy from 0.124 to 0.150 (+0.025, 90% interval +0.006 to +0.043). The complete solution written with y* in context reached 0.685, so
+the opening carries about 4.5% of the total effect. Openings of the informed model mostly restate the problem, and the decisive step comes
+later. The first sentence of y* helped as a hint (+0.040) but hurt when inserted as the start of the answer (−0.055): outputs became half
+as long and adopted the terse style of the reference. The hypothesis that y* acts through a sparse mechanism at the start of the solution
+is rejected at this granularity; the effect is spread along the solution.
+
+**Where along the solution does y* act? (mediation curve).** On 247 hard questions, solutions written with y* in context were cut after
+16 to 256 tokens or 25/50/75% of their length and continued by the model without y*. The transferred share of the total effect (0.130 →
+0.655) rises steadily: 2% at 16 tokens, 6% at 64, 18% at half the solution, 31% at three quarters. There is no localised key step.
+Informed solutions are not self-sufficient: given 75% of a correct informed solution, the uninformed model finishes correctly 40% of the
+time, against 69% for 75% of its own correct solutions. Informed text contains steps justified only by the hidden reference, so imitating
+it means learning from data confounded by a variable the student never observes. Forcing a prefix of a plain solution has no effect.
+
+**Causal skeleton of the reference solutions (rejected by pre-screen).** Each step of y* was deleted in turn and the drop in log-probability
+of the computed values in later steps and of the final answer was measured, giving a step graph; the skeleton is the set of ancestors of
+the answer. The graph separates computation from prose (prose is 2.5% of skeleton tokens against 54% elsewhere). Over 6 batches, SFT on
+the skeleton without the answer has cosine −0.065 with the GRPO gradient, no better than randomly chosen steps (−0.049); the full reference
+gives −0.077 and the answer region alone +0.026. The computational steps of the reference, not only its style, oppose the reward
+gradient, consistent with the mediation result above.
+
 ### Next steps
 1. Brainstorm a different family of mechanisms, outside "a teacher conditioned on y* supervises the student", each with a cheap
    pre-screen of this kind before any training run.

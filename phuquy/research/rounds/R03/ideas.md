@@ -79,3 +79,34 @@ G3 y* + phần thưởng cùng bước · G4 ok · G5 ok · G6 ~1,15× · G7 mas
 | placebo: thật / y* câu khác / hiệu | −0,003 / −0,002 / −0,008 | +0,123 / +0,095 / +0,056 |
 **R03-1 `pert=numbers` QUA** (≥ +0,05 cả 2 batch, > SFT-y*, neo đảo dòng ≤). **R03-2 LOẠI** (mask ≈ trung bình thường). Placebo: tín hiệu thầy chủ
 yếu do ngữ cảnh. Bước kế: cài `r03_cfpair` (λ=0,1, pert=numbers), train 1 run so với `grpo_s1` — chờ người dùng đồng ý.
+
+---
+## R03-4: Phần thưởng phụ theo KHÔNG GIAN NỘI DUNG học bằng cặp phản thực tế (CRL) — method `r03_crlsim`
+Vấn đề: P1 (giọng văn che nội dung) + P4 (~30% nhóm cả-sai, không gradient).
+Cơ chế (lời thường): học một đầu chiếu tuyến tính trên trạng thái ẩn của chính Qwen2.5-3B sao cho y* và lời giải ĐÚNG tự sinh của cùng câu (chung
+nội dung, khác giọng) nằm gần nhau, còn y* và ỹ* (cùng giọng, sai 1–2 giá trị) hay lời giải của câu khác nằm xa — theo kết quả nhận dạng
+nội dung/giọng của học tương phản trên cặp (von Kügelgen 2021, Locatello 2020). Trong GRPO, nhóm cả-sai nhận phần thưởng phụ β·độ gần nội dung
+giữa lời giải của trò và y*, nên có gradient mà không bắt trò chép giọng Luna. Ví dụ: 8 lời giải sai của một bài tổ hợp; lời giải nào đã chia
+trường hợp giống y* (dù viết kiểu của trò) được xếp trên lời giải đếm trùng.
+Dùng y* và phần thưởng: y* = mỏ neo trong không gian nội dung; phần thưởng nhị phân lọc lời giải đúng làm cặp dương cho đầu chiếu và vẫn là
+phần thưởng chính; phần phụ chỉ bật ở nhóm cả-sai.
+Đối chứng novel=0: β=0 (GRPO-only). Cờ `enc=crl|untrained|lexical` (thay đầu chiếu học bằng embedding chưa train / chồng lấp từ — bản sau gần RL2R).
+```
+Lọc cs-novelty-gate — r03_crlsim — QUA (kèm mốc RL2R)
+G1 P1 SFT-y* −0,09 TB 6 batch, phần chữ −0,13; P4 allfail 0,26–0,34 · đường nhân quả: phần thưởng phụ chỉ nhạy với nội dung → gradient ở nhóm cả-sai
+   mà không kéo giọng văn
+G2 gần: RL2R 2504.09895 (đọc phương pháp: BERTScore câu trả lời + từng bước so với y*, bổ sung cho kiểm đúng/sai, Qwen2.5-Math — encoder CÓ SẴN, nhạy
+   bề mặt/giọng; ở đây encoder HỌC để bất biến giọng từ cặp phản thực tế), 2509.13081 (cosine encoder có sẵn, không phải toán), XIRL 2106.03911
+   (encoder bất biến hình thái robot từ demo → phần thưởng khoảng cách; ở đây "hình thái" = giọng văn), Factored causal RM (tách z_c cho reward model
+   RLHF, chống thiên lệch độ dài) · truy vấn: "reward embedding similarity reference GRPO style-invariant", "content style disentanglement contrastive
+   paired texts identifiability", "causal representation learning RL reward shaping demonstration embedding distance invariant encoder"
+   · ghép (RL2R + encoder nhân quả) — được theo luật nới 21/11; RL2R-kiểu (`enc=lexical/untrained`) thành MỐC
+G3 y* (mỏ neo) + phần thưởng (lọc cặp dương, phần thưởng chính) trong cùng rollout · G4 chỉ Qwen2.5-3B (trạng thái ẩn của chính nó)
+G5 nhị phân giữ nguyên, phần phụ ≤ β chỉ ở nhóm cả-sai (không bao giờ vượt lời giải đúng); gaming: kiểm AUC của độ dài làm mốc — nếu độ gần chủ yếu
+   theo độ dài → loại · G6 ~1,05–1,1× (lấy trạng thái ẩn từ lượt tính log-prob cũ) · G7 β=0; dự đoán: allfail giảm nhanh hơn, Δ TB 0…+1
+G8 neo: trên câu giữ ngoài, đầu chiếu phải xếp sim(y*, lời giải đúng) > sim(y*, ỹ*) (đúng mục tiêu train); `enc=untrained` ≈ mức của RL2R
+```
+**Kiểm trước (`code/beat/diag_crl.py`):** model gốc, 1.024 câu × 8 mẫu @2048; train đầu chiếu trên 768 câu, đo trên 256 câu giữ ngoài. Chỉ số: AUC
+trong-nhóm (nhóm lẫn đúng/sai: độ gần với y* có xếp lời giải đúng trên lời giải sai không, loại được độ khó của câu). Mốc: embedding chưa train,
+chồng lấp từ (kiểu RL2R), thầy-có-y* (log p_T − log p_S trung bình), độ dài. Sống nếu AUC(crl) ≥ 0,65 và hơn mọi mốc ≥ 0,05.
+**27/11 — người dùng dừng hướng nội dung/giọng văn.** R03-4 không chạy (`code/beat/diag_crl.py` để lại, chưa dùng). Chuyển sang các góc nhân quả khác.
